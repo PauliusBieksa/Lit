@@ -1,12 +1,13 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 public enum Dirs
 {
 	N = 0,
-	NE = 45,
-	E = 90,
-	SE = 135,
-	S = 180,
+	NE = -45,
+	E = -90,
+	SE = -135,
+	S = -180,
 	SW = 225,
 	W = 270,
 	NW = 315
@@ -22,7 +23,10 @@ public enum MoveTypes
 
 public enum Button
 {
-    A, B, X, Y
+	A,
+	B,
+	X,
+	Y
 };
 
 public struct Move

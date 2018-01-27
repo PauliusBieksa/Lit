@@ -8,8 +8,7 @@ public class PlayerController : MonoBehaviour
 	Quaternion rot;
 	Transform trans;
 	public float step = 2.0f;
-
-	Dictionary<int, string> values;
+	public float waitTime = 1.0f;
 
 	public Move m1;
 	public Move m2;
@@ -24,8 +23,8 @@ public class PlayerController : MonoBehaviour
 		m1.dir = Dirs.E;
 		m1.type = MoveTypes.MOVE;
 
-		m1.dir = Dirs.S;
-		m1.type = MoveTypes.MOVE;
+		m2.dir = Dirs.S;
+		m2.type = MoveTypes.MOVE;
 
 		m.Add (m1);
 		m.Add (m2);
@@ -39,11 +38,11 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.Space))
 		{
 			Debug.Log ("got space");
-			ExecuteMoves (m);
+			StartCoroutine (ExecuteMoves (m));
 		}
 	}
 
-	void ExecuteMoves (List<Move> moves)
+	IEnumerator ExecuteMoves (List<Move> moves)
 	{
 		Debug.Log ("Executing");
 		int i = 0;
@@ -54,15 +53,14 @@ public class PlayerController : MonoBehaviour
 
 			if (mov.type == MoveTypes.MOVE)
 			{
-				Turn (mov);
+				StartCoroutine (Turn (mov));
+				yield return new WaitForSeconds (waitTime);
 				Debug.Log ("turned");
-				//Translate (mov);
-				//Debug.Log ("moved");
-				StartCoroutine (Hold ());
+				Translate (mov);
+				yield return new WaitForSeconds (waitTime);
+				Debug.Log ("moved");
 
 			}
-
-			//StartCoroutine (Hold ());
 		}
 	}
 
@@ -78,11 +76,11 @@ public class PlayerController : MonoBehaviour
 			end = Mathf.Sqrt (2);
 		}
 		pos += transform.forward * end * Time.deltaTime;
+		gameObject.transform.position = pos;
 		Debug.Log ("transform by " + transform.forward * end * Time.deltaTime);
-		StartCoroutine (Hold ());
 	}
 
-	void Turn (Move mov)
+	IEnumerator Turn (Move mov)
 	{
 		Debug.Log ("Rotating");
 		Debug.Log ("rotate to " + (float) mov.dir + " " + mov.dir);
@@ -90,12 +88,9 @@ public class PlayerController : MonoBehaviour
 		while (rot != target)
 		{
 			rot = Quaternion.RotateTowards (rot, target, step);
-			StartCoroutine (Hold ());
+			gameObject.transform.rotation = rot;
+			yield return null;
 		}
-		StartCoroutine (Hold ());
-	}
-	IEnumerator Hold ()
-	{
-		yield return new WaitForSeconds (0.5f);
+
 	}
 }
