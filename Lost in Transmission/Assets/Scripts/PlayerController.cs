@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
 	public float step = 2.0f;
 	public float waitTime = 1.0f;
+	public float dist = 1;
 
 	bool rotating;
 	bool moving;
@@ -82,11 +83,11 @@ public class PlayerController : MonoBehaviour
 		float end;
 		if (mov.dir == Dirs.N || mov.dir == Dirs.E || mov.dir == Dirs.S || mov.dir == Dirs.W)
 		{
-			end = 1.0f;
+			end = dist;
 		}
 		else
 		{
-			end = Mathf.Sqrt (2);
+			end = Mathf.Sqrt ((dist * dist) - (dist * dist));
 		}
 
 		Debug.Log ("transform by " + transform.forward * end);
