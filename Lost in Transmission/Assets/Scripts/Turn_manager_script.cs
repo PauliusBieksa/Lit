@@ -164,24 +164,24 @@ public class Turn_manager_script : MonoBehaviour
         if (cHistory[starting_index][(int)moves[starting_index].type] > 0)
         {
             validTurn = false;
-            locked[starting_index] = true;
+            locked[(int)moves[starting_index].type] = true;
             // put a lock on
         }
         else
         {
-            locked[starting_index] = false;
+            locked[(int)moves[starting_index].type] = false;
             // remove lock
         }
         // Second queued check
         if (cHistory[starting_index][(int)moves[(starting_index + 1) % 4].type] > 0)
         {
             validTurn = false;
-            locked[(starting_index + 1) % 4] = true;
+            locked[(int)moves[(starting_index + 1) % 4].type] = true;
             // Put a lock on
         }
         else
         {
-            locked[(starting_index + 1) % 4] = false;
+            locked[(int)moves[(starting_index + 1) % 4].type] = false;
             // remove lock
         }
     }
