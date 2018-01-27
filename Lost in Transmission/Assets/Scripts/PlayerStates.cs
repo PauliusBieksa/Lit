@@ -28,3 +28,8 @@ public struct Move
 	public MoveTypes type;
 	public Dirs dir;
 }
+
+public class staticObjects
+{
+    public static int[] cooldowns = { 0, 1, 3, 2, 4, 0 };
+}
