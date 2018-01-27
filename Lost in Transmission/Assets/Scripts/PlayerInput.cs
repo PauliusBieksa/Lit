@@ -54,14 +54,15 @@ public class PlayerInput : MonoBehaviour
     {
         get
         {
-            if (lRead)
+            if (!lRead)
             {
                 if (lTriggered > 0.0f)
                 {
                     lRead = true;
+                    return true;
                 }
             }
-            return lRead;
+            return false;
         }
     }
 
@@ -77,14 +78,15 @@ public class PlayerInput : MonoBehaviour
     {
         get
         {
-            if (rRead)
+            if (!rRead)
             {
                 if (rTriggered > 0.0f)
                 {
                     rRead = true;
+                    return true;
                 }
             }
-            return rRead;
+            return false;
         }
     }
 
