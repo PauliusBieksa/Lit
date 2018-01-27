@@ -9,16 +9,14 @@ public class JoinGame : MonoBehaviour
 	PlayerInput pI;
 
 	RectTransform rect;
-	public float speed = 10;
-	public Vector3 Left;
-	public Vector3 Right;
-	public Vector3 BNorm;
-	public Vector3 RNorm;
+	public float speed = 30;
+	public Vector3 Left = new Vector3 (-1255, 0, 0);
+	public Vector3 Right = new Vector3 (1255, 0, 0);
 
 	// Use this for initialization
 	void Start ()
 	{
-		rect = GetComponent<RectTransform> ();
+		rect = gameObject.GetComponent<RectTransform> ();
 	}
 
 	// Update is called once per frame
@@ -32,16 +30,21 @@ public class JoinGame : MonoBehaviour
 
 	IEnumerator slide ()
 	{
-		while (rect.position != Left && rect.position != Right)
+		while (rect.position != Left || rect.position != Right)
 		{
+			float before = rect.position.y;
 
-			if (gameObject.name.Contains ("Blue"))
+			if (gameObject.name.Contains ("Red"))
 			{
-				rect.position = Vector3.MoveTowards (BNorm, Left, speed);
+				rect.position = Vector3.MoveTowards (rect.position, Left, speed);
+				Instantiate (pI.gameObject);
+				pI.gameObject.transform.position = new Vector3 (-2.5f, 0.5f, 0);
 			}
 			else
 			{
-				rect.position = Vector3.MoveTowards (RNorm, Right, speed);
+				rect.position = Vector3.MoveTowards (rect.position, Right, speed);
+				Instantiate (pI.gameObject);
+				pI.gameObject.transform.position = new Vector3 (2.5f, 0.5f, 0);
 			}
 			yield return null;
 		}

@@ -53,7 +53,6 @@ public class PlayerController : MonoBehaviour
 
 		//col = gameObject.GetComponent<BoxCollider2D> ();
 
-		Debug.Log ("Started");
 	}
 
 	public void TurnPassthrough (List<Move> p)
@@ -71,7 +70,6 @@ public class PlayerController : MonoBehaviour
 	{
 		if (Input.GetKeyDown (KeyCode.Space))
 		{
-			Debug.Log ("got space");
 			StartCoroutine (ExecuteMoves (m));
 		}
 	}
@@ -79,13 +77,11 @@ public class PlayerController : MonoBehaviour
 	public IEnumerator ExecuteMoves (List<Move> moves)
 	{
 		Executed = false;
-		Debug.Log ("Executing");
 		int i = 0;
 		foreach (Move m in moves)
 		{
 			mov = m;
 			i++;
-			Debug.Log ("loop " + i);
 
 			// if (mov.type == MoveTypes.BLOCK)
 			// {
@@ -97,9 +93,7 @@ public class PlayerController : MonoBehaviour
 			{
 				StartCoroutine (Turn (mov));
 				yield return new WaitForSeconds (waitTime);
-				Debug.Log ("turned");
 				StartCoroutine (Translate (mov, dist, gameObject));
-				Debug.Log ("moved");
 
 			}
 			// else if (mov.type == MoveTypes.MELEE)
@@ -141,10 +135,8 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
-			end = Mathf.Sqrt ((d * d) - (d * d));
+			end = Mathf.Sqrt ((d * d) + (d * d));
 		}
-
-		Debug.Log ("transform by " + transform.forward * end);
 
 		while (rotating || moving)
 		{
@@ -153,7 +145,6 @@ public class PlayerController : MonoBehaviour
 
 		startTime = Time.time;
 		float fracComplete = 0.0f;
-		Debug.Log ("BULLSHIT TEXT " + fracComplete);
 		while (fracComplete < 1.0f)
 		{
 			float elapsedTime = (Time.time - startTime);
@@ -162,12 +153,9 @@ public class PlayerController : MonoBehaviour
 			{
 				localDT = journeyTime - elapsedTime;
 			}
-			Debug.Log ("BIG EASY TO SPOT" + localDT);
 			fracComplete = elapsedTime / journeyTime;
-			Debug.Log ("frac " + fracComplete.ToString ());
 			moving = true;
 
-			Debug.Log ("up is " + transform.up * end);
 			pos += (transform.up * end * localDT);
 			transform.position = (pos);
 			//gameObject.transform.position = pos;
@@ -183,7 +171,6 @@ public class PlayerController : MonoBehaviour
 
 	IEnumerator Turn (Move mov)
 	{
-		Debug.Log ("rotate to " + (float) mov.dir + " " + mov.dir);
 		Quaternion target = Quaternion.Euler (0, 0, (float) mov.dir);
 
 		while (rotating || moving)
