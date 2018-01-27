@@ -16,7 +16,8 @@ public enum MoveTypes
 	MOVE,
 	BLOCK,
 	MELEE,
-	RANGE
+	RANGE,
+    CHARGE
 };
 
 public enum Button

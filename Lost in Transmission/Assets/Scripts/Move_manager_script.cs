@@ -67,7 +67,33 @@ public class Move_manager_script : MonoBehaviour
     }
 
 
-    void Execute()
+    Dirs ReverseDir(Dirs d)
+    {
+        switch (d)
+        {
+            case Dirs.N:
+                return Dirs.S;
+            case Dirs.NE:
+                return Dirs.SW;
+            case Dirs.E:
+                return Dirs.W;
+            case Dirs.SE:
+                return Dirs.NW;
+            case Dirs.S:
+                return Dirs.N;
+            case Dirs.SW:
+                return Dirs.NE;
+            case Dirs.W:
+                return Dirs.E;
+            case Dirs.NW:
+                return Dirs.SE;
+            default:
+                return Dirs.NONE;
+        }
+    }
+
+
+    IEnumerator Execute()
     {
         bool p1pushed = false;
         Dirs p1dir = Dirs.NONE;
@@ -324,21 +350,268 @@ public class Move_manager_script : MonoBehaviour
             }
         }
 
+        // Pushed by projectile
         if (p1pushed)
         {
-            // stuff
+            StartCoroutine(Lerp(player1t, p1dir, 1));
         }
         if (p2pushed)
         {
-            // stuff
+            StartCoroutine(Lerp(player1t, p1dir, 1));
         }
+        yield return new WaitForSeconds(0.22f);
+
+        // Charge checks
+        Vector3 tmp = new Vector3(0.0f, 0.0f, 0.0f);
+        if (m1.type == MoveTypes.CHARGE && m2.type == MoveTypes.CHARGE)
+        {
+            // Charging straight into each other
+            if (DirLookup(m1.dir) + DirLookup(m2.dir) == tmp)
+            {
+                // SPECIAL HAM /////////////////////////////////////////////////////////
+                if (Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position) < 0.09f)
+                {
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 3));
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                // One square in the middle
+                else if (Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position - DirLookup(m2.dir)) < 0.09f)
+                {
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 2));
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                // Two squares in the middle
+                else if (Vector3.SqrMagnitude(player1t.position + (DirLookup(m1.dir) * 1.5f) - player2t.position - (DirLookup(m2.dir) * 1.5f)) < 0.09f)
+                {
+                    StartCoroutine(Lerp(player1t, p1dir, 1));
+                    StartCoroutine(Lerp(player2t, p2dir, 1));
+                    yield return new WaitForSeconds(0.22f);
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 2));
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                // Three squares in the middle
+                else if (Vector3.SqrMagnitude(player1t.position + (DirLookup(m1.dir) * 2.0f) - player2t.position - (DirLookup(m2.dir) * 2.0f)) < 0.09f)
+                {
+                    StartCoroutine(Lerp(player1t, p1dir, 1));
+                    StartCoroutine(Lerp(player2t, p2dir, 1));
+                    yield return new WaitForSeconds(0.22f);
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 2));
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                // No contact
+                else
+                {
+                    StartCoroutine(Lerp(player1t, p1dir, 2));
+                    StartCoroutine(Lerp(player2t, p2dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+            else
+            {
+                if (Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position - DirLookup(m2.dir)) < 0.09f)
+                {
+                    StartCoroutine(Lerp(player1t, p1dir, 1));
+                    StartCoroutine(Lerp(player2t, p2dir, 1));
+                    yield return new WaitForSeconds(0.22f);
+                    StartCoroutine(Lerp(player1t, p2dir, 2));
+                    StartCoroutine(Lerp(player2t, p1dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else if (Vector3.SqrMagnitude(player1t.position + (DirLookup(m1.dir) * 2.0f) - player2t.position - (DirLookup(m2.dir) * 2.0f)) < 0.09f)
+                {
+                    StartCoroutine(Lerp(player1t, p1dir, 2));
+                    StartCoroutine(Lerp(player2t, p2dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                    StartCoroutine(Lerp(player1t, p2dir, 2));
+                    StartCoroutine(Lerp(player2t, p1dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                // No contact
+                else
+                {
+                    StartCoroutine(Lerp(player1t, p1dir, 2));
+                    StartCoroutine(Lerp(player2t, p2dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+        }
+        else if (m1.type == MoveTypes.CHARGE)
+        {
+            if (Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position) < 0.09f)
+            {
+                StartCoroutine(Lerp(player1t, p1dir, 1));
+                yield return new WaitForSeconds(0.22f);
+                if (m2.type == MoveTypes.BLOCK)
+                {
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else
+                {
+                    StartCoroutine(Lerp(player2t, p1dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+            else if (Vector3.SqrMagnitude(player1t.position + (DirLookup(m1.dir) * 2.0f) - player2t.position) < 0.09f)
+            {
+                StartCoroutine(Lerp(player1t, p1dir, 2));
+                yield return new WaitForSeconds(0.22f);
+                if (m2.type == MoveTypes.BLOCK)
+                {
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else
+                {
+                    StartCoroutine(Lerp(player2t, p1dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+            // No contact
+            else
+            {
+                StartCoroutine(Lerp(player1t, p1dir, 2));
+                StartCoroutine(Lerp(player2t, p2dir, 2));
+                yield return new WaitForSeconds(0.22f);
+            }
+        }
+        else if (m2.type == MoveTypes.CHARGE)
+        {
+            if (Vector3.SqrMagnitude(player2t.position + DirLookup(m2.dir) - player1t.position) < 0.09f)
+            {
+                StartCoroutine(Lerp(player2t, p2dir, 1));
+                yield return new WaitForSeconds(0.22f);
+                if (m1.type == MoveTypes.BLOCK)
+                {
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else
+                {
+                    StartCoroutine(Lerp(player1t, p2dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+            else if (Vector3.SqrMagnitude(player2t.position + (DirLookup(m2.dir) * 2.0f) - player1t.position) < 0.09f)
+            {
+                StartCoroutine(Lerp(player2t, p2dir, 2));
+                yield return new WaitForSeconds(0.22f);
+                if (m1.type == MoveTypes.BLOCK)
+                {
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else
+                {
+                    StartCoroutine(Lerp(player1t, p2dir, 2));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+            // No contact
+            else
+            {
+                StartCoroutine(Lerp(player1t, p1dir, 2));
+                StartCoroutine(Lerp(player2t, p2dir, 2));
+                yield return new WaitForSeconds(0.22f);
+            }
+        }
+        else if (m1.type == MoveTypes.MOVE && m2.type == MoveTypes.MOVE)
+        {
+            if (!(Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position - DirLookup(m2.dir)) < 0.09f))
+            {
+                StartCoroutine(Lerp(player1t, p1dir, 1));
+                StartCoroutine(Lerp(player2t, p2dir, 1));
+                yield return new WaitForSeconds(0.22f);
+            }
+        }
+        else if (m1.type == MoveTypes.MOVE)
+        {
+            if (!(Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position) < 0.09f))
+            {
+                StartCoroutine(Lerp(player1t, p1dir, 1));
+                yield return new WaitForSeconds(0.22f);
+            }
+        }
+        else if (m2.type == MoveTypes.MOVE)
+        {
+            if (!(Vector3.SqrMagnitude(player2t.position + DirLookup(m2.dir) - player1t.position) < 0.09f))
+            {
+                StartCoroutine(Lerp(player2t, p2dir, 1));
+                yield return new WaitForSeconds(0.22f);
+            }
+        }
+        else if (m1.type == MoveTypes.MELEE && m2.type == MoveTypes.MELEE)
+        {
+            bool p1hit = false;
+            bool p2hit = false;
+            if (Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position) < 0.09f)
+            {
+                p2hit = true;
+            }
+            if (Vector3.SqrMagnitude(player2t.position + DirLookup(m2.dir) - player1t.position) < 0.09f)
+            {
+                p1hit = true;
+            }
+            if (p1hit)
+            {
+                StartCoroutine(Lerp(player1t, p2dir, 3));
+                yield return new WaitForSeconds(0.22f);
+            }
+            if (p2hit)
+            {
+                StartCoroutine(Lerp(player2t, p1dir, 3));
+                yield return new WaitForSeconds(0.22f);
+            }
+        }
+        else if (m1.type == MoveTypes.MELEE)
+        {
+            if (Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position) < 0.09f)
+            {
+                if (m2.type == MoveTypes.BLOCK)
+                {
+                    StartCoroutine(Lerp(player1t, ReverseDir(p1dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else
+                {
+                    StartCoroutine(Lerp(player2t, p1dir, 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+        }
+        else if (m2.type == MoveTypes.MELEE)
+        {
+            if (Vector3.SqrMagnitude(player2t.position + DirLookup(m2.dir) - player1t.position) < 0.09f)
+            {
+                if (m1.type == MoveTypes.BLOCK)
+                {
+                    StartCoroutine(Lerp(player2t, ReverseDir(p2dir), 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+                else
+                {
+                    StartCoroutine(Lerp(player1t, p2dir, 3));
+                    yield return new WaitForSeconds(0.22f);
+                }
+            }
+        }
+        else if (m1.type == MoveTypes.RANGE && m2.type == MoveTypes.RANGE)
+        {
+
+        }
+        yield return null;
     }
 
-
-    public IEnumerator Translatelate(Transform t, Dirs d)
+    // May be usefull to have the duration as parameter
+    public IEnumerator Lerp(Transform t, Dirs d, int dist)
     {
-        while (currentlyMoving)
-            yield return null;
+        // May be required ///////////////////////////////////
+        //while (currentlyMoving)
+        //    yield return null;
 
         Vector3 startingPosition = t.position;
         currentlyMoving = true;
@@ -351,7 +624,7 @@ public class Move_manager_script : MonoBehaviour
             if (timeRemaining < 0.0f)
                 timeRemaining = 0.0f;
             float alpha = 1.0f - (timeRemaining * scalar);
-            t.position = startingPosition + (DirLookup(d) * alpha);
+            t.position = startingPosition + (DirLookup(d) * (float)dist * alpha);
             yield return null;
         }
         currentlyMoving = false;
