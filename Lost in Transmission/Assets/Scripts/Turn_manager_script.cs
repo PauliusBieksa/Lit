@@ -22,9 +22,12 @@ public class Turn_manager_script : MonoBehaviour
     bool validTurn = false;
     float turnTimer = 10.0f;
 
+    PlayerController pc;
+
     // Use this for initialization
     void Start()
     {
+        pc = new PlayerController();
         moves = new List<Move>();
         cooldowns = new int[6];
         abilitySr = new SpriteRenderer[6];
@@ -59,6 +62,7 @@ public class Turn_manager_script : MonoBehaviour
             // make invisible
         }
         // execute moves
+        StartCoroutine(pc.ExecuteMoves(moves));
     }
 
     void StartTurn()
