@@ -7,7 +7,11 @@ public class QueueInput : MonoBehaviour
     [SerializeField]
     GameObject player;
     PlayerInput pI;
+    [SerializeField]
+    Turn_manager_script tms;
+
     int heldIndex;
+    Dirs dir = Dirs.NONE;
     bool[] held = new bool[4];
     Button[] butts = new Button[4];
 
@@ -28,6 +32,7 @@ public class QueueInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        dir = pI.CompassInput();
         for (int i = 0; i < 4; ++i)
         {
             if (!held[i] && pI.ButtonHeld(butts[i]))
@@ -35,14 +40,34 @@ public class QueueInput : MonoBehaviour
                 held[i] = true;
                 heldIndex = i;
             }
-            else if(held[i] && !pI.ButtonHeld(butts[i]))
+            else if (held[i] && !pI.ButtonHeld(butts[i]))
             {
                 held[i] = false;
-                if(i == heldIndex /*and direction indicated*/)
+                if (i == heldIndex && tms.Cooldown(buttToMove(butts[i])) && dir != Dirs.NONE /*and direction indicated*/)
                 {
+                    Move m = new Move();
                     // Send move to paulius
+                    tms.AddMove(m);
                 }
             }
+        }
+    }
+
+
+    MoveTypes buttToMove(Button butt)
+    {
+        switch (butt)
+        {
+            case Button.A:
+                return MoveTypes.MOVE;
+            case Button.B:
+                return MoveTypes.MELEE;
+            case Button.X:
+                return MoveTypes.BLOCK;
+            case Button.Y:
+                return MoveTypes.RANGE;
+            default:
+                return MoveTypes.MOVE;
         }
     }
 }

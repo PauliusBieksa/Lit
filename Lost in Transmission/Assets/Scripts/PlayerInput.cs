@@ -199,7 +199,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (!hasController())
         {
-            return Dirs.N;
+            return Dirs.NONE;
         }
         float zDir = Vector3.Cross(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput()).z;
         float dot = Vector3.Dot(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput());
@@ -246,6 +246,6 @@ public class PlayerInput : MonoBehaviour
                 return Dirs.SE;
             }
         }
-        return Dirs.N;
+        return Dirs.NONE;
     }
 }
