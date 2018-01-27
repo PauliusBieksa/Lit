@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
 
     PlayerInput pI;
+    [SerializeField]
+    Turn_manager_script tms;
 
     public Dirs outCompass;
     public int outAngle;
@@ -26,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
             outCompass = pI.CompassInput();
             outAngle = (int)outCompass;
             outVec = pI.JoystickInput();
-            transform.Translate(Quaternion.Euler(0.0f, 0.0f, 360 - (int)pI.CompassInput()) * new Vector3(0.0f, 1.0f, 0.0f) * Time.fixedDeltaTime);
+            //transform.Translate(Quaternion.Euler(0.0f, 0.0f, (int)pI.CompassInput()) * new Vector3(0.0f, 1.0f, 0.0f) * Time.fixedDeltaTime);
         }
         if (pI.LTButtonDown)
         {

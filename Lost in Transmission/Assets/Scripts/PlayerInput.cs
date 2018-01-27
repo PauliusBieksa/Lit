@@ -58,7 +58,6 @@ public class PlayerInput : MonoBehaviour
             {
                 if (lTriggered > 0.0f)
                 {
-                    lRead = true;
                     return true;
                 }
             }
@@ -82,7 +81,6 @@ public class PlayerInput : MonoBehaviour
             {
                 if (rTriggered > 0.0f)
                 {
-                    rRead = true;
                     return true;
                 }
             }
@@ -152,6 +150,11 @@ public class PlayerInput : MonoBehaviour
         {
             Horizontal = Input.GetAxisRaw(horizontalAxis);
             Vertical = Input.GetAxisRaw(verticalAxis);
+
+            if(lHeld && !lRead)
+            {
+                lRead = true;
+            }
             float trigger = Input.GetAxisRaw(lTrigg);
             if (trigger != 0.0f)
             {
@@ -166,6 +169,11 @@ public class PlayerInput : MonoBehaviour
                 lTriggered = trigger;
                 lHeld = false;
                 lRead = false;
+            }
+
+            if(rHeld && !rRead)
+            {
+                rRead = true;
             }
             trigger = Input.GetAxisRaw(rTrigg);
             if (trigger != 0.0f)
