@@ -134,7 +134,7 @@ public class Turn_manager_script : MonoBehaviour
     {
         if (moves.Count < 3)
             return;
-        if (starting_index < moves.Count - 1)
+        if (starting_index < moves.Count - 3)
         {
             starting_index++;
 
@@ -143,15 +143,15 @@ public class Turn_manager_script : MonoBehaviour
             int highestIndex = 0;
             for (int i = 0; i < 4; i++)
             {
-                if (queuedTran[i].position.y < highest)
+                if (queuedTran[i].position.y > highest)
                 {
                     highestIndex = i;
                     highest = queuedTran[i].position.y;
                 }
                 // move each card after it has been checked
-                queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y - vertOffset, queuedTran[i].position.z);
+                queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + vertOffset, queuedTran[i].position.z);
             }
-            queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y + (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
+            queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
 
             QueueValidations();
         }
@@ -193,8 +193,8 @@ public class Turn_manager_script : MonoBehaviour
         loopTimer -= Time.deltaTime;
         if (loopTimer <= 0.0f)
         {
-            Debug.Log("Time's up!!!");
-            EndTurn();
+            //Debug.Log("Time's up!!!");
+            //EndTurn();
         }
     }
 
