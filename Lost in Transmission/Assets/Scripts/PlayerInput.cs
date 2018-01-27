@@ -54,14 +54,15 @@ public class PlayerInput : MonoBehaviour
     {
         get
         {
-            if (lRead)
+            if (!lRead)
             {
                 if (lTriggered > 0.0f)
                 {
                     lRead = true;
+                    return true;
                 }
             }
-            return lRead;
+            return false;
         }
     }
 
@@ -77,14 +78,15 @@ public class PlayerInput : MonoBehaviour
     {
         get
         {
-            if (rRead)
+            if (!rRead)
             {
                 if (rTriggered > 0.0f)
                 {
                     rRead = true;
+                    return true;
                 }
             }
-            return rRead;
+            return false;
         }
     }
 
@@ -197,7 +199,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (!hasController())
         {
-            return Dirs.N;
+            return Dirs.NONE;
         }
         float zDir = Vector3.Cross(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput()).z;
         float dot = Vector3.Dot(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput());
@@ -244,6 +246,6 @@ public class PlayerInput : MonoBehaviour
                 return Dirs.SE;
             }
         }
-        return Dirs.N;
+        return Dirs.NONE;
     }
 }

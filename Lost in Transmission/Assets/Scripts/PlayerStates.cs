@@ -1,5 +1,6 @@
 ﻿public enum Dirs
 {
+    NONE = 999,
 	N = 0,
 	NE = -45,
 	E = -90,
