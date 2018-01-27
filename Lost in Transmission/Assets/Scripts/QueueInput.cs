@@ -5,7 +5,6 @@ using UnityEngine;
 public class QueueInput : MonoBehaviour
 {
     [SerializeField]
-    GameObject player;
     PlayerInput pI;
     [SerializeField]
     Turn_manager_script tms;
@@ -26,7 +25,6 @@ public class QueueInput : MonoBehaviour
         butts[1] = Button.B;
         butts[2] = Button.X;
         butts[3] = Button.Y;
-        pI = player.GetComponent<PlayerInput>();
     }
 
     // Update is called once per frame
@@ -49,14 +47,24 @@ public class QueueInput : MonoBehaviour
                     m.dir = dir;
                     m.type = buttToMove(butts[i]);
                     // Send move to paulius
+                    Debug.Log("QI " + m.dir.ToString() + " " + m.type.ToString());
                     tms.AddMove(m);
                 }
             }
         }
+
+        if (pI.LTButtonDown)
+        {
+            tms.QueueUp();
+        }
+        else if (pI.RTButtonDown)
+        {
+            tms.QueueDown();
+        }
     }
 
 
-    MoveTypes buttToMove(Button butt)
+            MoveTypes buttToMove(Button butt)
     {
         switch (butt)
         {

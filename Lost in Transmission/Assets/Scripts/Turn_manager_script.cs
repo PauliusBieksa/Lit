@@ -5,14 +5,15 @@ using UnityEngine;
 public class Turn_manager_script : MonoBehaviour
 {
     List<Move> moves = new List<Move>();
+    public int count = 0;
     int starting_index = 0;
 
     [SerializeField] float vertOffset;
 
     [SerializeField] Sprite[] onCooldown;
     [SerializeField] Sprite[] offCooldown;
-    [SerializeField] GameObject player;
-    PlayerInput pI;
+    [SerializeField] PlayerInput pI;
+    [SerializeField] PlayerController pc;
 
     SpriteRenderer[] queuedSr = new SpriteRenderer[4];
     Transform[] queuedTran = new Transform[4];
@@ -24,9 +25,8 @@ public class Turn_manager_script : MonoBehaviour
 
     bool validTurn = false;
     [SerializeField] float turnTimer;
-    float loopTimer;
+    float loopTimer = 0.0f;
 
-    PlayerController pc = new PlayerController();
 
     // Use this for initialization
     void Start()
@@ -42,13 +42,13 @@ public class Turn_manager_script : MonoBehaviour
             queuedSr[i] = q[i].GetComponent<SpriteRenderer>();
             queuedTran[i] = q[i].GetComponent<Transform>();
         }
-        pI = player.GetComponent<PlayerInput>();
-        loopTimer = turnTimer;
+        StartTurn();
     }
 
     void StartTurn()
     {
-        cHistory[0] = cooldowns;
+        loopTimer += turnTimer;
+        cHistory.Add(cooldowns);
     }
 
     void EndTurn()
@@ -60,14 +60,23 @@ public class Turn_manager_script : MonoBehaviour
 
         List<Move> turn = new List<Move>();
         for (int i = 0; i < (moves.Count < 3 ? moves.Count : 3); i++)
+        {
             turn.Add(moves[starting_index + i]);
+        }
+        while (turn.Count < 3)
+        {
+            Move m = new Move();
+            m.dir = Dirs.E;
+            m.type = MoveTypes.MOVE;
+            turn.Add(m);
+        }
 
         for (int i = 0; i < 4; i++)
         {
             // make invisible
         }
         // execute moves
-        StartCoroutine(pc.ExecuteMoves(moves));
+        StartCoroutine(pc.ExecuteMoves(turn));
         cHistory.Clear();
         moves.Clear();
         for (int i = 0; i < cooldowns.Length; ++i)
@@ -180,11 +189,12 @@ public class Turn_manager_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        count = moves.Count;
         loopTimer -= Time.deltaTime;
-        if (turnTimer <= 0.0f)
+        if (loopTimer <= 0.0f)
         {
+            Debug.Log("Time's up!!!");
             EndTurn();
-            loopTimer += turnTimer;
         }
     }
 
@@ -200,7 +210,7 @@ public class Turn_manager_script : MonoBehaviour
             starting_index++;
         }
         cHistory.Add(new int[6]);
-
+        
         for (int i = 1; i < 6; i++)
         {
             // Some jank (shouldn't be 6 times)
