@@ -7,9 +7,12 @@ public class PlayerController : MonoBehaviour
 	Vector3 pos;
 	Quaternion rot;
 	Transform trans;
-	bool rotating;
+
 	public float step = 2.0f;
 	public float waitTime = 1.0f;
+
+	bool rotating;
+	bool moving;
 
 	public Move m1;
 	public Move m2;
@@ -48,7 +51,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	IEnumerator ExecuteMoves (List<Move> moves)
+	public IEnumerator ExecuteMoves (List<Move> moves)
 	{
 		Debug.Log ("Executing");
 		int i = 0;
@@ -72,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
 	IEnumerator Translate (Move mov)
 	{
-		Vector3 startPos = pos;
+		Vector3 startPos = transform.position;
 		float end;
 		if (mov.dir == Dirs.N || mov.dir == Dirs.E || mov.dir == Dirs.S || mov.dir == Dirs.W)
 		{
@@ -85,18 +88,21 @@ public class PlayerController : MonoBehaviour
 
 		Debug.Log ("transform by " + transform.forward * end);
 
-		while (rotating)
+		while (rotating || moving)
 		{
 			yield return null;
 		}
 
 		while ((transform.position - startPos).magnitude != end)
 		{
+			moving = true;
 			pos += transform.up * end;
 			transform.position = pos;
 			//gameObject.transform.position = pos;
 			yield return new WaitForSeconds (waitTime);
 		}
+
+		moving = false;
 
 	}
 
@@ -104,6 +110,12 @@ public class PlayerController : MonoBehaviour
 	{
 		Debug.Log ("rotate to " + (float) mov.dir + " " + mov.dir);
 		Quaternion target = Quaternion.Euler (0, 0, (float) mov.dir);
+
+		while (rotating || moving)
+		{
+			yield return null;
+		}
+
 		while (rot != target)
 		{
 			rotating = true;
