@@ -99,7 +99,6 @@ public class PlayerController : MonoBehaviour
 				yield return new WaitForSeconds (waitTime);
 				Debug.Log ("turned");
 				StartCoroutine (Translate (mov, dist, gameObject));
-				yield return new WaitForSeconds (waitTime);
 				Debug.Log ("moved");
 
 			}
@@ -114,7 +113,7 @@ public class PlayerController : MonoBehaviour
 			// }
 		}
 
-		Executed = true;
+		//tm.Start();
 	}
 
 	void OnCollisionEnter (Collision other)
