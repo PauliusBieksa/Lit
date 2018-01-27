@@ -18,6 +18,7 @@ public class Turn_manager_script : MonoBehaviour
     SpriteRenderer[] abilitySr;
 
     bool validTurn = false;
+    float turnTimer = 10.0f;
 
     // Use this for initialization
     void Start()
@@ -38,6 +39,28 @@ public class Turn_manager_script : MonoBehaviour
             queuedSr[i] = q[i].GetComponent<SpriteRenderer>();
             queuedTran[i] = q[i].GetComponent<Transform>();
         }
+    }
+
+    void EndTurn()
+    {
+        if (!validTurn)
+            starting_index = 0;
+
+        List<Move> turn = new List<Move>();
+        for (int i = 0; i < (moves.Count < 3 ? moves.Count : 3); i++)
+            turn.Add(moves[starting_index + i]);
+
+        moves.Clear();
+        for (int i = 0; i < 4; i++)
+        {
+            // make invisible
+        }
+        // execute moves
+    }
+
+    void StartTurn()
+    {
+
     }
 
     // Returns whether an ability is on cooldown
@@ -145,7 +168,9 @@ public class Turn_manager_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        turnTimer -= Time.deltaTime;
+        if (turnTimer <= 0.0f)
+            EndTurn();
     }
 
     // Adds move to the moves queue, appends starting index if required ** Check for cooldown before using **
@@ -187,5 +212,9 @@ public class Turn_manager_script : MonoBehaviour
             queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + 1.3f, queuedTran[i].position.z);
         }
         queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (1.3f * 4.0f), queuedTran[highestIndex].position.z);
+        if (moves.Count < 3)
+        {
+            // make sprite appear
+        }
     }
 }
