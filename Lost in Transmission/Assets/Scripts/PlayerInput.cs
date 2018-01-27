@@ -19,6 +19,11 @@ public class PlayerInput : MonoBehaviour
     public float dotOut;
     public float zOut;
 
+    public bool hasController()
+    {
+        return controllerNumber > 0;
+    }
+
     public void setControllerNumber(int conNum)
     {
         controllerNumber = conNum;

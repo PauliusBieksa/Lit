@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         pI = GetComponent<PlayerInput>();
-        pI.setControllerNumber(1);
+        //pI.setControllerNumber(1);
     }
 
     // Update is called once per frame
