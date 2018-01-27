@@ -14,14 +14,12 @@ public class Turn_manager_script : MonoBehaviour
     [SerializeField] Sprite[] offCooldown;
     [SerializeField] PlayerInput pI;
     [SerializeField] PlayerController pc;
-
-    SpriteRenderer[] queuedSr = new SpriteRenderer[4];
+    
     Transform[] queuedTran = new Transform[4];
     bool[] locked = new bool[4];
 
     int[] cooldowns = new int[6];
     List<int[]> cHistory = new List<int[]>();
-    SpriteRenderer[] abilitySr = new SpriteRenderer[6];
 
     bool validTurn = false;
     [SerializeField] float turnTimer;
@@ -31,15 +29,9 @@ public class Turn_manager_script : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        for (int i = 0; i < 6; i++)
-        {
-            abilitySr[i] = GameObject.Find("ability_card_" + i).GetComponent<SpriteRenderer>();
-            abilitySr[i].sprite = offCooldown[i];
-        }
         GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
         for (int i = 0; i < 4; i++)
         {
-            queuedSr[i] = q[i].GetComponent<SpriteRenderer>();
             queuedTran[i] = q[i].GetComponent<Transform>();
         }
         StartTurn();
@@ -193,8 +185,8 @@ public class Turn_manager_script : MonoBehaviour
         loopTimer -= Time.deltaTime;
         if (loopTimer <= 0.0f)
         {
-            //Debug.Log("Time's up!!!");
-            //EndTurn();
+            Debug.Log("Time's up!!!");
+            EndTurn();
         }
     }
 

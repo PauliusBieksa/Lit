@@ -27,9 +27,6 @@ public class PlayerInput : MonoBehaviour
     private bool rRead;
     private bool rHeld;
 
-    private float dotOut;
-    private float zOut;
-
     public bool hasController()
     {
         return controllerNumber > 0;
@@ -151,7 +148,7 @@ public class PlayerInput : MonoBehaviour
             Horizontal = Input.GetAxisRaw(horizontalAxis);
             Vertical = Input.GetAxisRaw(verticalAxis);
 
-            if(lHeld && !lRead)
+            if (lHeld && !lRead)
             {
                 lRead = true;
             }
@@ -171,7 +168,7 @@ public class PlayerInput : MonoBehaviour
                 lRead = false;
             }
 
-            if(rHeld && !rRead)
+            if (rHeld && !rRead)
             {
                 rRead = true;
             }
@@ -211,9 +208,6 @@ public class PlayerInput : MonoBehaviour
         }
         float zDir = Vector3.Cross(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput()).z;
         float dot = Vector3.Dot(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput());
-
-        dotOut = dot;
-        zOut = zDir;
 
         if (dot > (1.0f - divider))
         {
