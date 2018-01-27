@@ -161,7 +161,7 @@ public class Turn_manager_script : MonoBehaviour
     {
         validTurn = true;
         // First queued check
-        if (cooldowns[(int)moves[starting_index].type] > 0)
+        if (cHistory[starting_index][(int)moves[starting_index].type] > 0)
         {
             validTurn = false;
             locked[starting_index] = true;
@@ -173,7 +173,7 @@ public class Turn_manager_script : MonoBehaviour
             // remove lock
         }
         // Second queued check
-        if (cooldowns[(int)moves[(starting_index + 1) % 4].type] > 0)
+        if (cHistory[starting_index][(int)moves[(starting_index + 1) % 4].type] > 0)
         {
             validTurn = false;
             locked[(starting_index + 1) % 4] = true;
@@ -201,6 +201,7 @@ public class Turn_manager_script : MonoBehaviour
     // Adds move to the moves queue, appends starting index if required ** Check for cooldown before using **
     public void AddMove(Move m)
     {
+
         if (moves.Count > 2)
         {
             while (moves.Count > 3 + starting_index)
@@ -210,7 +211,7 @@ public class Turn_manager_script : MonoBehaviour
             starting_index++;
         }
         cHistory.Add(new int[6]);
-        
+
         for (int i = 1; i < 6; i++)
         {
             // Some jank (shouldn't be 6 times)
