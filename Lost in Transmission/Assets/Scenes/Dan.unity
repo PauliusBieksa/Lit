@@ -190,10 +190,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player:
-  - {fileID: 1171720595253714, guid: 0ef0409f89e232a45b78a746befd29d2, type: 2}
+  - {fileID: 381880274}
+  - {fileID: 1714742457}
   speed: 30
-  Left: {x: -1255, y: 0, z: 0}
-  Right: {x: 1255, y: 0, z: 0}
+  Left: {x: 1255, y: 0, z: 0}
+  Right: {x: -1255, y: 0, z: 0}
 --- !u!1 &210800453
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +257,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &381880274 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1171720595253714, guid: 0ef0409f89e232a45b78a746befd29d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 2041905528}
+--- !u!114 &381880276 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114550540291879438, guid: 0ef0409f89e232a45b78a746befd29d2,
+    type: 2}
+  m_PrefabInternal: {fileID: 2041905528}
+  m_Script: {fileID: 11500000, guid: 768c21ba0136d4b4a8dd6a3ded39e7fe, type: 3}
 --- !u!1 &626616635
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,9 +836,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ed21b8a6dcbe34298b89716d5d4bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players:
-  - {fileID: 1171720595253714, guid: 0ef0409f89e232a45b78a746befd29d2, type: 2}
-  - {fileID: 1931966918522244, guid: 7fc34aff25e1a03498ee4cd10daa12e6, type: 2}
+  inputs:
+  - {fileID: 381880276}
+  - {fileID: 1714742458}
 --- !u!4 &1469134031
 Transform:
   m_ObjectHideFlags: 0
@@ -882,6 +894,17 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fc34aff25e1a03498ee4cd10daa12e6, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1714742457 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1931966918522244, guid: 7fc34aff25e1a03498ee4cd10daa12e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1640767758}
+--- !u!114 &1714742458 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114734412979313854, guid: 7fc34aff25e1a03498ee4cd10daa12e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1640767758}
+  m_Script: {fileID: 11500000, guid: 768c21ba0136d4b4a8dd6a3ded39e7fe, type: 3}
 --- !u!1 &1924060208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,7 +1121,7 @@ Prefab:
     - target: {fileID: 212442089119083484, guid: 0ef0409f89e232a45b78a746befd29d2,
         type: 2}
       propertyPath: m_SortingOrder
-      value: 1
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 212263595353983924, guid: 0ef0409f89e232a45b78a746befd29d2,
         type: 2}

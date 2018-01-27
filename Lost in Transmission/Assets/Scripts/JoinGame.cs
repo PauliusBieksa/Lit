@@ -12,15 +12,15 @@ public class JoinGame : MonoBehaviour
 
 	RectTransform rect;
 	public float speed = 30;
-	public Vector3 Left = new Vector3 (-1255, 0, 0);
-	public Vector3 Right = new Vector3 (1255, 0, 0);
+	private Vector3 Left = new Vector3 (-1255, 0, 0);
+	private Vector3 Right = new Vector3 (1255, 0, 0);
 
 	// Use this for initialization
 	void Start ()
 	{
 		player[0].GetComponent<SpriteRenderer> ().sortingOrder = -5;
 		player[1].GetComponent<SpriteRenderer> ().sortingOrder = -5;
-		rect = gameObject.GetComponent<RectTransform> ();
+		rect = GetComponent<RectTransform> ();
 		pI[0] = player[0].GetComponent<PlayerInput> ();
 		pI[1] = player[1].GetComponent<PlayerInput> ();
 	}
@@ -30,36 +30,51 @@ public class JoinGame : MonoBehaviour
 	{
 		if (pI[0].ButtonDown (Button.A))
 		{
+			Debug.Log ("p1 button");
 			StartCoroutine (slideL ());
+			Debug.Log ("done 1");
 		}
 
 		if (pI[1].ButtonDown (Button.A))
 		{
+			Debug.Log ("p1 button");
 			StartCoroutine (slideR ());
+			Debug.Log ("done 2");
 		}
 	}
 
 	IEnumerator slideL ()
 	{
-		while (rect.position != Left)
+		Debug.Log ("Red--------------------------------------------------");
+		if (rect.gameObject.name.Contains ("Red"))
 		{
-			float before = rect.position.y;
-
-			rect.position = Vector3.MoveTowards (rect.position, Left, speed);
-			player[0].GetComponent<SpriteRenderer> ().sortingOrder = 1;
-			pI[0].gameObject.transform.position = new Vector3 (-2.5f, 0.5f, 0);
-			yield return null;
+			Debug.Log ("Red");
+			while (rect.position != Left)
+			{
+				Debug.Log ("player 1 join");
+				float before = rect.position.y;
+				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Left, speed);
+				player[0].GetComponent<SpriteRenderer> ().sortingOrder = 1;
+				pI[0].gameObject.transform.position = new Vector3 (-2.5f, 0.5f, 0);
+				yield return null;
+			}
 		}
 	}
 
 	IEnumerator slideR ()
 	{
-		while (rect.position != Right)
+		if (rect.gameObject.name.Contains ("Blue"))
 		{
-			rect.position = Vector3.MoveTowards (rect.position, Right, speed);
-			player[1].GetComponent<SpriteRenderer> ().sortingOrder = 1;
-			pI[1].gameObject.transform.position = new Vector3 (2.5f, 0.5f, 0);
-			yield return null;
+			Debug.Log ("Blue");
+			while (rect.position != Right)
+			{
+				Debug.Log ("player 2 join");
+
+				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Right, speed);
+				player[1].GetComponent<SpriteRenderer> ().sortingOrder = 1;
+				pI[1].gameObject.transform.position = new Vector3 (2.5f, 0.5f, 0);
+				yield return null;
+			}
 		}
 	}
 }
