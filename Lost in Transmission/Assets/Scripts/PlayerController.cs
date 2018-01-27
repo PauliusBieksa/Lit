@@ -101,10 +101,15 @@ public class PlayerController : MonoBehaviour
 		Debug.Log ("BULLSHIT TEXT " + fracComplete);
 		while (fracComplete < 1.0f)
 		{
+			float elapsedTime = (Time.time - startTime);
 			float localDT = Time.deltaTime / journeyTime;
+			if ((elapsedTime + localDT) > journeyTime)
+			{
+				localDT = journeyTime - elapsedTime;
+			}
 			Debug.Log ("BIG EASY TO SPOT" + localDT);
-			fracComplete = (Time.time - startTime) / journeyTime;
-			Debug.Log ("frac " + fracComplete);
+			fracComplete = elapsedTime / journeyTime;
+			Debug.Log ("frac " + fracComplete.ToString ());
 			moving = true;
 
 			Debug.Log ("up is " + transform.up * end);
@@ -113,9 +118,8 @@ public class PlayerController : MonoBehaviour
 			//gameObject.transform.position = pos;
 			yield return null;
 		}
-		pos -= transform.up * 0.8f * Time.deltaTime / journeyTime;
-		pos.x = Mathf.Round (pos.x) - 0.5f;
-		pos.y = Mathf.Round (pos.y) - 0.5f;
+		pos.x = Mathf.Floor (pos.x) + 0.5f;
+		pos.y = Mathf.Floor (pos.y) + 0.5f;
 		transform.position = pos;
 		moving = false;
 		yield return new WaitForSeconds (waitTime);
