@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 		m2.dir = Dirs.S;
 		m2.type = MoveTypes.MOVE;
 
-		m3.dir = Dirs.NE;
+		m3.dir = Dirs.NW;
 		m3.type = MoveTypes.MOVE;
 
 		m.Add (m1);
@@ -64,7 +64,11 @@ public class PlayerController : MonoBehaviour
 			i++;
 			Debug.Log ("loop " + i);
 
-			if (mov.type == MoveTypes.MOVE)
+			if (mov.type == MoveTypes.BLOCK)
+			{
+
+			}
+			else if (mov.type == MoveTypes.MOVE)
 			{
 				StartCoroutine (Turn (mov));
 				yield return new WaitForSeconds (waitTime);
@@ -74,6 +78,7 @@ public class PlayerController : MonoBehaviour
 				Debug.Log ("moved");
 
 			}
+
 		}
 	}
 
