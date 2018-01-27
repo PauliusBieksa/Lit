@@ -10,21 +10,33 @@ public class Turn_manager_script : MonoBehaviour
     [SerializeField] Sprite[] onCooldown;
     [SerializeField] Sprite[] offCooldown;
 
+    SpriteRenderer[] queuedSr;
+    Transform[] queuedTran;
+
     int[] cooldowns;
-    // True when an ability goes off cooldown
     List<int[]> cHistory = new List<int[]>();
-    SpriteRenderer[] sr;
+    SpriteRenderer[] abilitySr;
+
+    bool validTurn = false;
 
     // Use this for initialization
     void Start()
     {
         moves = new List<Move>();
         cooldowns = new int[6];
-        sr = new SpriteRenderer[6];
+        abilitySr = new SpriteRenderer[6];
         for (int i = 0; i < 6; i++)
         {
-            sr[i] = GameObject.Find("ability_card_" + i).GetComponent<SpriteRenderer>();
-            sr[i].sprite = offCooldown[i];
+            abilitySr[i] = GameObject.Find("ability_card_" + i).GetComponent<SpriteRenderer>();
+            abilitySr[i].sprite = offCooldown[i];
+        }
+        GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
+        queuedSr = new SpriteRenderer[4];
+        queuedTran = new Transform[4];
+        for (int i = 0; i < 4; i++)
+        {
+            queuedSr[i] = q[i].GetComponent<SpriteRenderer>();
+            queuedTran[i] = q[i].GetComponent<Transform>();
         }
     }
 
@@ -37,15 +49,97 @@ public class Turn_manager_script : MonoBehaviour
     // Moves the move selector up the queue
     public void QueueUp()
     {
+        if (moves.Count < 3)
+            return;
         if (starting_index > 0)
+        {
             starting_index--;
+
+            // Move the cards
+            float lowest = 50.0f;
+            int lowestIndex = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (queuedTran[i].position.y < lowest)
+                {
+                    lowestIndex = i;
+                    lowest = queuedTran[i].position.y;
+                }
+                // move each card after it has been checked
+                queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y - 1.3f, queuedTran[i].position.z);
+            }
+            queuedTran[lowestIndex].position = new Vector3(queuedTran[lowestIndex].position.x, queuedTran[lowestIndex].position.y + (1.3f * 4.0f), queuedTran[lowestIndex].position.z);
+
+            validTurn = true;
+            // First queued check
+            if (cooldowns[(int)moves[starting_index].type] > 0)
+            {
+                validTurn = false;
+                // put a lock on
+            }
+            else
+            {
+                // remove lock
+            }
+            // Second queued check
+            if (cooldowns[(int)moves[starting_index + 1].type] > 0)
+            {
+                validTurn = false;
+                // Put a lock on
+            }
+            else
+            {
+                // remove lock
+            }
+        }
     }
 
     // Moves the move selector down the queue
     public void QueueDown()
     {
+        if (moves.Count < 3)
+            return;
         if (starting_index < moves.Count - 1)
+        {
             starting_index++;
+
+            // Move the cards
+            float highest = 50.0f;
+            int highestIndex = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (queuedTran[i].position.y < highest)
+                {
+                    highestIndex = i;
+                    highest = queuedTran[i].position.y;
+                }
+                // move each card after it has been checked
+                queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y - 1.3f, queuedTran[i].position.z);
+            }
+            queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y + (1.3f * 4.0f), queuedTran[highestIndex].position.z);
+
+            validTurn = true;
+            // First queued check
+            if (cooldowns[(int)moves[starting_index].type] > 0)
+            {
+                validTurn = false;
+                // put a lock on
+            }
+            else
+            {
+                // remove lock
+            }
+            // Second queued check
+            if (cooldowns[(int)moves[starting_index + 1].type] > 0)
+            {
+                validTurn = false;
+                // Put a lock on
+            }
+            else
+            {
+                // remove lock
+            }
+        }
     }
 
     // Update is called once per frame
@@ -80,6 +174,18 @@ public class Turn_manager_script : MonoBehaviour
         }
         moves.Add(m);
         cooldowns[(int)m.type] = staticObjects.cooldowns[(int)m.type];
-
+        float highest = -50.0f;
+        int highestIndex = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            if (queuedTran[i].position.y > highest)
+            {
+                highestIndex = i;
+                highest = queuedTran[i].position.y;
+            }
+            // move each card after it has been checked
+            queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + 1.3f, queuedTran[i].position.z);
+        }
+        queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (1.3f * 4.0f), queuedTran[highestIndex].position.z);
     }
 }
