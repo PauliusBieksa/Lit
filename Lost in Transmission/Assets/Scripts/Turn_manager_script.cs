@@ -9,6 +9,8 @@ public class Turn_manager_script : MonoBehaviour
 
     [SerializeField] Sprite[] onCooldown;
     [SerializeField] Sprite[] offCooldown;
+    [SerializeField] GameObject player;
+    PlayerInput pI;
 
     SpriteRenderer[] queuedSr;
     Transform[] queuedTran;
@@ -39,6 +41,7 @@ public class Turn_manager_script : MonoBehaviour
             queuedSr[i] = q[i].GetComponent<SpriteRenderer>();
             queuedTran[i] = q[i].GetComponent<Transform>();
         }
+        pI = player.GetComponent<PlayerInput>();
     }
 
     void EndTurn()
