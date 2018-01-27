@@ -7,9 +7,13 @@ public class PlayerController : MonoBehaviour
 	Vector3 pos;
 	Quaternion rot;
 	Transform trans;
-	public float smooth = 2.0f;
+	public float step = 2.0f;
 
 	Dictionary<int, string> values;
+
+	public Move m1;
+	public Move m2;
+	List<Move> m = new List<Move> ();
 
 	void Start ()
 	{
@@ -17,43 +21,52 @@ public class PlayerController : MonoBehaviour
 		rot = gameObject.transform.rotation;
 		trans = gameObject.transform;
 
-		List<Move> m = new List<Move> ();
+		m1.dir = Dirs.E;
+		m1.type = MoveTypes.MOVE;
 
-		Move t;
-		t.dir = Dirs.E;
-		t.type = MoveTypes.MOVE;
-		m.Add (t);
+		m1.dir = Dirs.S;
+		m1.type = MoveTypes.MOVE;
+
+		m.Add (m1);
+		m.Add (m2);
 
 		Debug.Log ("Started");
-		StartCoroutine (Execute (m));
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-
+		if (Input.GetKeyDown (KeyCode.Space))
+		{
+			Debug.Log ("got space");
+			ExecuteMoves (m);
+		}
 	}
 
-	IEnumerator Execute (List<Move> moves)
+	void ExecuteMoves (List<Move> moves)
 	{
+		Debug.Log ("Executing");
+		int i = 0;
 		foreach (Move mov in moves)
 		{
+			i++;
+			Debug.Log ("loop " + i);
 
 			if (mov.type == MoveTypes.MOVE)
 			{
-				StartCoroutine (Turn (mov));
-
-				StartCoroutine (Translate (mov));
+				Turn (mov);
+				Debug.Log ("turned");
+				//Translate (mov);
+				//Debug.Log ("moved");
 				StartCoroutine (Hold ());
 
 			}
 
-			StartCoroutine (Hold ());
+			//StartCoroutine (Hold ());
 		}
-		yield return null;
 	}
 
-	IEnumerator Translate (Move mov)
+	void Translate (Move mov)
 	{
 		float end;
 		if (mov.dir == Dirs.N || mov.dir == Dirs.E || mov.dir == Dirs.S || mov.dir == Dirs.W)
@@ -66,19 +79,20 @@ public class PlayerController : MonoBehaviour
 		}
 		pos += transform.forward * end * Time.deltaTime;
 		Debug.Log ("transform by " + transform.forward * end * Time.deltaTime);
-		yield return new WaitForSeconds (0.5f);
+		StartCoroutine (Hold ());
 	}
 
-	IEnumerator Turn (Move mov)
+	void Turn (Move mov)
 	{
+		Debug.Log ("Rotating");
+		Debug.Log ("rotate to " + (float) mov.dir + " " + mov.dir);
 		Quaternion target = Quaternion.Euler (0, 0, (float) mov.dir);
-		do
+		while (rot != target)
 		{
-			transform.rotation = Quaternion.Slerp (transform.rotation, target, Time.deltaTime * smooth);
-			Debug.Log ("rotate to " + (float) mov.dir);
+			rot = Quaternion.RotateTowards (rot, target, step);
 			StartCoroutine (Hold ());
-		} while (rot != target);
-		yield return new WaitForSeconds (0.5f);
+		}
+		StartCoroutine (Hold ());
 	}
 	IEnumerator Hold ()
 	{
