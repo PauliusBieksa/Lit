@@ -33,4 +33,5 @@ public struct Move
 public class staticObjects
 {
     public static int[] cooldowns = { 0, 1, 3, 2, 4, 0 };
+    public const float moveTime = 0.2f;
 }

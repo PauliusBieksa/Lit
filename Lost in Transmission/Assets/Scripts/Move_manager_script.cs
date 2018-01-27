@@ -16,6 +16,8 @@ public class Move_manager_script : MonoBehaviour
     Move m1;
     Move m2;
 
+    bool currentlyMoving = false;
+
     // Use this for initialization
     void Start()
     {
@@ -35,6 +37,32 @@ public class Move_manager_script : MonoBehaviour
             pc1.Executed = false;
             pc2.Executed = false;
             Execute();
+        }
+    }
+
+
+    Vector3 DirLookup(Dirs d)
+    {
+        switch (d)
+        {
+            case Dirs.N:
+                return new Vector3(0.0f, 1.0f, 0.0f);
+            case Dirs.NE:
+                return new Vector3(1.0f, 1.0f, 0.0f);
+            case Dirs.E:
+                return new Vector3(1.0f, 0.0f, 0.0f);
+            case Dirs.SE:
+                return new Vector3(1.0f, -1.0f, 0.0f);
+            case Dirs.S:
+                return new Vector3(0.0f, -1.0f, 0.0f);
+            case Dirs.SW:
+                return new Vector3(-1.0f, -1.0f, 0.0f);
+            case Dirs.W:
+                return new Vector3(-1.0f, 0.0f, 0.0f);
+            case Dirs.NW:
+                return new Vector3(-1.0f, 1.0f, 0.0f);
+            default:
+                return new Vector3(-1.0f, 1.0f, 0.0f);
         }
     }
 
@@ -296,6 +324,36 @@ public class Move_manager_script : MonoBehaviour
             }
         }
 
+        if (p1pushed)
+        {
+            // stuff
+        }
+        if (p2pushed)
+        {
+            // stuff
+        }
+    }
 
+
+    public IEnumerator Translatelate(Transform t, Dirs d)
+    {
+        while (currentlyMoving)
+            yield return null;
+
+        Vector3 startingPosition = t.position;
+        currentlyMoving = true;
+        float startingTime = Time.unscaledTime;
+        float timeRemaining = staticObjects.moveTime;
+        float scalar = 1.0f / timeRemaining;
+        while (timeRemaining > 0.0f)
+        {
+            timeRemaining -= Time.unscaledTime - startingTime;
+            if (timeRemaining < 0.0f)
+                timeRemaining = 0.0f;
+            float alpha = 1.0f - (timeRemaining * scalar);
+            t.position = startingPosition + (DirLookup(d) * alpha);
+            yield return null;
+        }
+        currentlyMoving = false;
     }
 }
