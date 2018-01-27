@@ -22,7 +22,7 @@ public enum MoveTypes
 
 public enum Button
 {
-    A, B, X, Y
+    A, B, X, Y, RT, LT, RB, LB
 };
 
 public struct Move

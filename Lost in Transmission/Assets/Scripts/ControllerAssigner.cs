@@ -19,15 +19,14 @@ public class ControllerAssigner : MonoBehaviour {
 	void Update () {
 		for(int i = 1; i < 3; ++i)
         {
-            if (usedControllers.Contains(i))
-            {
-                continue;
+            if (!usedControllers.Contains(i))
+			{
+				if (Input.GetButton(i + "_A"))
+				{
+					AssignController(i);
+				}
             }
 
-            if (Input.GetButton(i + "_A"))
-            {
-                AssignController(i);
-            }
         }
 	}
 
@@ -39,7 +38,7 @@ public class ControllerAssigner : MonoBehaviour {
             {
                 usedControllers.Add(conNum);
                 inputs[i].setControllerNumber(conNum);
-                break;
+                return;
             }
         }
     }

@@ -28,11 +28,11 @@ public class PlayerMovement : MonoBehaviour
             outVec = pI.JoystickInput();
             transform.Translate(Quaternion.Euler(0.0f, 0.0f, 360 - (int)pI.CompassInput()) * new Vector3(0.0f, 1.0f, 0.0f) * Time.fixedDeltaTime);
         }
-        if (pI.ButtonDown(Button.A))
+        if (pI.LTButtonDown)
         {
             transform.Translate(new Vector3(0.0f, -1.0f, 0.0f));
         }
-        if (pI.ButtonDown(Button.Y))
+        if (pI.RTButtonDown)
         {
             transform.Translate(new Vector3(0.0f, 1.0f, 0.0f));
         }
