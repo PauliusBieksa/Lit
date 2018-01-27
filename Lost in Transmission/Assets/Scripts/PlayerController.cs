@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
 	bool rotating;
 	bool moving;
 
+	public float startTime;
+	public float journeyTime = 0.5f;
+
 	public Move m1;
 	public Move m2;
 	public Move m3;
@@ -93,16 +96,29 @@ public class PlayerController : MonoBehaviour
 			yield return null;
 		}
 
-		while ((transform.position - startPos).magnitude != end)
+		startTime = Time.time;
+		float fracComplete = 0.0f;
+		Debug.Log ("BULLSHIT TEXT " + fracComplete);
+		while (fracComplete < 1.0f)
 		{
+			float localDT = Time.deltaTime / journeyTime;
+			Debug.Log ("BIG EASY TO SPOT" + localDT);
+			fracComplete = (Time.time - startTime) / journeyTime;
+			Debug.Log ("frac " + fracComplete);
 			moving = true;
-			pos += transform.up * end;
-			transform.position = pos;
-			//gameObject.transform.position = pos;
-			yield return new WaitForSeconds (waitTime);
-		}
 
+			Debug.Log ("up is " + transform.up * end);
+			pos += (transform.up * end * localDT);
+			transform.position = (pos);
+			//gameObject.transform.position = pos;
+			yield return null;
+		}
+		pos -= transform.up * 0.8f * Time.deltaTime / journeyTime;
+		pos.x = Mathf.Round (pos.x) - 0.5f;
+		pos.y = Mathf.Round (pos.y) - 0.5f;
+		transform.position = pos;
 		moving = false;
+		yield return new WaitForSeconds (waitTime);
 
 	}
 
