@@ -427,7 +427,7 @@ MonoBehaviour:
   step: 5
   waitTime: 1
   startTime: 0
-  journeyTime: 0.5
+  journeyTime: 0.15
 --- !u!114 &2072028836
 MonoBehaviour:
   m_ObjectHideFlags: 0

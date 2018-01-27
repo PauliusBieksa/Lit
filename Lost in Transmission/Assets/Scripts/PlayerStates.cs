@@ -5,9 +5,9 @@
 	E = -90,
 	SE = -135,
 	S = -180,
-	SW = 225,
-	W = 270,
-	NW = 315
+	SW = -225,
+	W = -270,
+	NW = -315
 }
 
 public enum MoveTypes
