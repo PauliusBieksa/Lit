@@ -11,17 +11,26 @@ public class PlayerController : MonoBehaviour
 	public float step = 2.0f;
 	public float waitTime = 1.0f;
 	public float dist = 1;
+	public float chargePower = 2;
 
 	bool rotating;
 	bool moving;
+	bool collidable = false;
 
 	public float startTime;
 	public float journeyTime = 0.5f;
 
-	public Move m1;
-	public Move m2;
-	public Move m3;
+	[SerializeField] public Move m1;
+	[SerializeField] public Move m2;
+	[SerializeField] public Move m3;
 	List<Move> m = new List<Move> ();
+	public static Move mov;
+
+	[SerializeField] Turn_manager_script tm;
+	public List<Move> Passthrough = new List<Move> ();
+	public bool Executed = false;
+
+	//BoxCollider2D col;
 
 	void Start ()
 	{
@@ -35,14 +44,26 @@ public class PlayerController : MonoBehaviour
 		m2.dir = Dirs.S;
 		m2.type = MoveTypes.MOVE;
 
-		m3.dir = Dirs.NE;
-		m3.type = MoveTypes.MOVE;
+		m3.dir = Dirs.NW;
+		m3.type = MoveTypes.MELEE;
 
 		m.Add (m1);
 		m.Add (m2);
 		m.Add (m3);
 
+		//col = gameObject.GetComponent<BoxCollider2D> ();
+
 		Debug.Log ("Started");
+	}
+
+	public void TurnPassthrough (List<Move> p)
+	{
+		Passthrough = p;
+	}
+
+	public void ExecuteMovesSequence (List<Move> m)
+	{
+		StartCoroutine (ExecuteMoves (m));
 	}
 
 	// Update is called once per frame
@@ -57,37 +78,71 @@ public class PlayerController : MonoBehaviour
 
 	public IEnumerator ExecuteMoves (List<Move> moves)
 	{
+		Executed = false;
 		Debug.Log ("Executing");
 		int i = 0;
-		foreach (Move mov in moves)
+		foreach (Move m in moves)
 		{
+			mov = m;
 			i++;
 			Debug.Log ("loop " + i);
 
+			// if (mov.type == MoveTypes.BLOCK)
+			// {
+			// 	Vector3 reset = transform.position;
+			// 	yield return new WaitForSeconds (0.6f);
+			// 	transform.position = reset;
+			// }
 			if (mov.type == MoveTypes.MOVE)
 			{
 				StartCoroutine (Turn (mov));
 				yield return new WaitForSeconds (waitTime);
 				Debug.Log ("turned");
-				StartCoroutine (Translate (mov));
+				StartCoroutine (Translate (mov, dist, gameObject));
 				yield return new WaitForSeconds (waitTime);
 				Debug.Log ("moved");
 
 			}
+			// else if (mov.type == MoveTypes.MELEE)
+			// {
+			// 	StartCoroutine (Turn (mov));
+			// 	yield return new WaitForSeconds (waitTime);
+			// 	Debug.Log ("turned");
+			// 	StartCoroutine (Translate (mov, chargePower, gameObject));
+			// 	collidable = true;
+
+			// }
+		}
+
+		Executed = true;
+	}
+
+	void OnCollisionEnter (Collision other)
+	{
+		collidable = false;
+		if (other.gameObject.name.ToLower ().Contains ("player"))
+		{
+			StopCoroutine (Translate (mov, chargePower, gameObject));
+			Pushback (other.gameObject, mov);
 		}
 	}
 
-	IEnumerator Translate (Move mov)
+	public void Pushback (GameObject hitPlayer, Move m)
+	{
+		StartCoroutine (Translate (mov, chargePower, hitPlayer));
+	}
+
+	IEnumerator Translate (Move mov, float d, GameObject g)
 	{
 		Vector3 startPos = transform.position;
 		float end;
 		if (mov.dir == Dirs.N || mov.dir == Dirs.E || mov.dir == Dirs.S || mov.dir == Dirs.W)
 		{
-			end = dist;
+			end = d;
 		}
 		else
 		{
-			end = Mathf.Sqrt ((dist * dist) - (dist * dist));
+			end = Mathf.Sqrt ((d * d) - (d * d));
 		}
 
 		Debug.Log ("transform by " + transform.forward * end);
