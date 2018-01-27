@@ -22,6 +22,6 @@ public enum MoveTypes
 
 public struct Move
 {
-	public string Type;
-	public float Dir;
+	public MoveTypes type;
+	public Dirs dir;
 }
