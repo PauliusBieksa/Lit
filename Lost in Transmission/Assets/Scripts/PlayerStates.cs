@@ -20,6 +20,11 @@ public enum MoveTypes
 	RANGE
 };
 
+public enum Button
+{
+    A, B, X, Y
+};
+
 public struct Move
 {
 	public MoveTypes type;
