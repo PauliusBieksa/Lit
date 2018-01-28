@@ -27,15 +27,12 @@ public class PlayerInput : MonoBehaviour
     private bool rRead;
     private bool rHeld;
 
-    private float dotOut;
-    private float zOut;
-
-    public bool hasController()
+    public bool HasController()
     {
         return controllerNumber > 0;
     }
 
-    public void setControllerNumber(int conNum)
+    public void SetControllerNumber(int conNum)
     {
         controllerNumber = conNum;
         horizontalAxis = controllerNumber + "_horizontal";
@@ -48,6 +45,7 @@ public class PlayerInput : MonoBehaviour
         rTrigg = controllerNumber + "_RTrigger";
         lBump = controllerNumber + "_LBumper";
         rBump = controllerNumber + "_RBumper";
+        GetComponent<Turn_manager_script>().PlayerEntered();
     }
 
     public bool LTButtonDown
@@ -98,7 +96,7 @@ public class PlayerInput : MonoBehaviour
 
     public bool ButtonDown(Button butt)
     {
-        if (!hasController())
+        if (!HasController())
         {
             return false;
         }
@@ -122,7 +120,7 @@ public class PlayerInput : MonoBehaviour
 
     public bool ButtonHeld(Button butt)
     {
-        if (!hasController())
+        if (!HasController())
         {
             return false;
         }
@@ -146,12 +144,12 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (hasController())
+        if (HasController())
         {
             Horizontal = Input.GetAxisRaw(horizontalAxis);
             Vertical = Input.GetAxisRaw(verticalAxis);
 
-            if(lHeld && !lRead)
+            if (lHeld && !lRead)
             {
                 lRead = true;
             }
@@ -171,7 +169,7 @@ public class PlayerInput : MonoBehaviour
                 lRead = false;
             }
 
-            if(rHeld && !rRead)
+            if (rHeld && !rRead)
             {
                 rRead = true;
             }
@@ -195,7 +193,7 @@ public class PlayerInput : MonoBehaviour
 
     public Vector3 JoystickInput()
     {
-        if (!hasController())
+        if (!HasController())
         {
             return new Vector3();
         }
@@ -205,15 +203,12 @@ public class PlayerInput : MonoBehaviour
 
     public Dirs CompassInput()
     {
-        if (!hasController())
+        if (!HasController())
         {
             return Dirs.NONE;
         }
         float zDir = Vector3.Cross(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput()).z;
         float dot = Vector3.Dot(new Vector3(0.0f, 1.0f, 0.0f), JoystickInput());
-
-        dotOut = dot;
-        zOut = zDir;
 
         if (dot > (1.0f - divider))
         {

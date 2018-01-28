@@ -8,55 +8,73 @@ public class Turn_manager_script : MonoBehaviour
     public int count = 0;
     int starting_index = 0;
 
+    SpriteLibrary sL;
+
     [SerializeField] float vertOffset;
 
     [SerializeField] Sprite[] onCooldown;
     [SerializeField] Sprite[] offCooldown;
-    [SerializeField] PlayerInput pI;
+    PlayerInput pI;
     [SerializeField] PlayerController pc;
 
-    SpriteRenderer[] queuedSr = new SpriteRenderer[4];
-    Transform[] queuedTran = new Transform[4];
+    [SerializeField] Transform[] queuedTran = new Transform[4];
     bool[] locked = new bool[4];
 
     int[] cooldowns = new int[6];
+    bool[] superLock = new bool[6];
     List<int[]> cHistory = new List<int[]>();
-    SpriteRenderer[] abilitySr = new SpriteRenderer[6];
+    public int[] outcool = new int[6];
 
     bool validTurn = false;
-    [SerializeField] float turnTimer;
+    [SerializeField] float turnTimer = 15.0f;
     float loopTimer = 0.0f;
 
+    AbilityMaster abMaster;
 
     // Use this for initialization
     void Start()
     {
-        for (int i = 0; i < 6; i++)
-        {
-            abilitySr[i] = GameObject.Find("ability_card_" + i).GetComponent<SpriteRenderer>();
-            abilitySr[i].sprite = offCooldown[i];
-        }
+        sL = FindObjectOfType<SpriteLibrary>();
+        pI = GetComponent<PlayerInput>();
         GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
         for (int i = 0; i < 4; i++)
         {
-            queuedSr[i] = q[i].GetComponent<SpriteRenderer>();
-            queuedTran[i] = q[i].GetComponent<Transform>();
+            //   queuedTran[i] = q[i].GetComponent<Transform>();
         }
-        StartTurn();
+        abMaster = GetComponentInChildren<AbilityMaster>();
+        cooldowns = new int[] { 0, 0, 0, 0, 0, 0 };
+        loopTimer += turnTimer;
+        cHistory.Add(cooldowns);
+        starting_index = 0;
+    }
+
+    public void PlayerEntered()
+    {
+        MakeLocks();
     }
 
     void StartTurn()
     {
         loopTimer += turnTimer;
         cHistory.Add(cooldowns);
+        starting_index = 0;
+        for(int i = 0; i < 6; ++i)
+        {
+            superLock[i] = false;
+            if(cooldowns[i] >= 3)
+            {
+                superLock[i] = true;
+            }
+        }
+        MakeLocks();
     }
 
     void EndTurn()
     {
-        if (!validTurn)
-        {
-            starting_index = 0;
-        }
+        //if (!validTurn)
+        //{
+        //    starting_index = 0;
+        //}
 
         List<Move> turn = new List<Move>();
         for (int i = 0; i < (moves.Count < 3 ? moves.Count : 3); i++)
@@ -68,7 +86,8 @@ public class Turn_manager_script : MonoBehaviour
             Move m = new Move();
             m.dir = Dirs.E;
             m.type = MoveTypes.MOVE;
-            turn.Add(m);
+            AddMove(m);
+            turn.Add(moves[moves.Count - 1]);
         }
 
         for (int i = 0; i < 4; i++)
@@ -77,14 +96,16 @@ public class Turn_manager_script : MonoBehaviour
         }
         // execute moves
         StartCoroutine(pc.ExecuteMoves(turn));
+        cooldowns = cHistory[cHistory.Count - 1];
         cHistory.Clear();
         moves.Clear();
-        for (int i = 0; i < cooldowns.Length; ++i)
+        for (int i = 0; i < 6; ++i)
         {
-            if (cooldowns[i] >= 3)
+            if (superLock[i])
             {
                 cooldowns[i] -= 3;
             }
+            superLock[i] = false;
         }
         StartTurn();
     }
@@ -98,12 +119,23 @@ public class Turn_manager_script : MonoBehaviour
     // Returns whether an ability is on cooldown(now) (true is available to use)
     public bool CurrCooldown(MoveTypes m)
     {
-        return cHistory[cHistory.Count - 1][(int)m] > 0 ? false : true;
+        int index = 0;
+        if (moves.Count > 3)
+        {
+            index = starting_index + 3;
+        }
+        else
+        {
+            index = starting_index + moves.Count;
+        }
+        return cHistory[index][(int)m] > 0 ? false : true;
+        //return (cooldowns[(int)m] < 3 ? cHistory[cHistory.Count - 1][(int)m] == 0 : false);
     }
 
     // Moves the move selector up the queue
     public void QueueUp()
     {
+        Debug.Log("up:" + starting_index);
         if (moves.Count < 3)
             return;
         if (starting_index > 0)
@@ -111,19 +143,19 @@ public class Turn_manager_script : MonoBehaviour
             starting_index--;
 
             // Move the cards
-            float lowest = 50.0f;
-            int lowestIndex = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                if (queuedTran[i].position.y < lowest)
-                {
-                    lowestIndex = i;
-                    lowest = queuedTran[i].position.y;
-                }
-                // move each card after it has been checked
-                queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y - vertOffset, queuedTran[i].position.z);
-            }
-            queuedTran[lowestIndex].position = new Vector3(queuedTran[lowestIndex].position.x, queuedTran[lowestIndex].position.y + (vertOffset * 4.0f), queuedTran[lowestIndex].position.z);
+            //float lowest = 50.0f;
+            //int lowestIndex = 0;
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    if (queuedTran[i].position.y < lowest)
+            //    {
+            //        lowestIndex = i;
+            //        lowest = queuedTran[i].position.y;
+            //    }
+            //    // move each card after it has been checked
+            //    queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y - vertOffset, queuedTran[i].position.z);
+            //}
+            //queuedTran[lowestIndex].position = new Vector3(queuedTran[lowestIndex].position.x, queuedTran[lowestIndex].position.y + (vertOffset * 4.0f), queuedTran[lowestIndex].position.z);
 
             QueueValidations();
         }
@@ -134,24 +166,24 @@ public class Turn_manager_script : MonoBehaviour
     {
         if (moves.Count < 3)
             return;
-        if (starting_index < moves.Count - 1)
+        if (starting_index < moves.Count - 3)
         {
             starting_index++;
 
             // Move the cards
-            float highest = -50.0f;
-            int highestIndex = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                if (queuedTran[i].position.y < highest)
-                {
-                    highestIndex = i;
-                    highest = queuedTran[i].position.y;
-                }
-                // move each card after it has been checked
-                queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y - vertOffset, queuedTran[i].position.z);
-            }
-            queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y + (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
+            //float highest = -50.0f;
+            //int highestIndex = 0;
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    if (queuedTran[i].position.y > highest)
+            //    {
+            //        highestIndex = i;
+            //        highest = queuedTran[i].position.y;
+            //    }
+            //    // move each card after it has been checked
+            //    queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + vertOffset, queuedTran[i].position.z);
+            //}
+            //queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
 
             QueueValidations();
         }
@@ -161,29 +193,30 @@ public class Turn_manager_script : MonoBehaviour
     {
         validTurn = true;
         // First queued check
-        if (cooldowns[(int)moves[starting_index].type] > 0)
-        {
-            validTurn = false;
-            locked[starting_index] = true;
-            // put a lock on
-        }
-        else
-        {
-            locked[starting_index] = false;
-            // remove lock
-        }
-        // Second queued check
-        if (cooldowns[(int)moves[(starting_index + 1) % 4].type] > 0)
-        {
-            validTurn = false;
-            locked[(starting_index + 1) % 4] = true;
-            // Put a lock on
-        }
-        else
-        {
-            locked[(starting_index + 1) % 4] = false;
-            // remove lock
-        }
+        //if (cHistory[starting_index][(int)moves[starting_index].type] > 0)
+        //{
+        //    validTurn = false;
+        //    locked[(int)moves[starting_index].type] = true;
+        //    // put a lock on
+        //}
+        //else
+        //{
+        //    locked[(int)moves[starting_index].type] = false;
+        //    // remove lock
+        //}
+        //// Second queued check
+        //if (cHistory[starting_index][(int)moves[starting_index + 1].type] > 0)
+        //{
+        //    validTurn = false;
+        //    locked[(int)moves[starting_index + 1].type] = true;
+        //    // Put a lock on
+        //}
+        //else
+        //{
+        //    locked[(int)moves[starting_index + 1].type] = false;
+        //    // remove lock
+        //}
+        MakeLocks();
     }
 
     // Update is called once per frame
@@ -209,35 +242,101 @@ public class Turn_manager_script : MonoBehaviour
             }
             starting_index++;
         }
+
         cHistory.Add(new int[6]);
-        
         for (int i = 1; i < 6; i++)
         {
             // Some jank (shouldn't be 6 times)
             cHistory[cHistory.Count - 1][i] = cHistory[cHistory.Count - 2][i];
-            if (cHistory[cHistory.Count - 1][i] < 3 && cHistory[cHistory.Count - 1][i] != 0)
+            if (cooldowns[i] < 3 && cHistory[cHistory.Count - 1][i] != 0)
             {
                 cHistory[cHistory.Count - 1][i]--;
             }
         }
+        cHistory[cHistory.Count - 1][(int)m.type] = staticObjects.cooldowns[(int)m.type];
+
         moves.Add(m);
-        cooldowns[(int)m.type] = staticObjects.cooldowns[(int)m.type];
-        float highest = -50.0f;
-        int highestIndex = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            if (queuedTran[i].position.y > highest)
-            {
-                highestIndex = i;
-                highest = queuedTran[i].position.y;
-            }
-            // move each card after it has been checked
-            queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + vertOffset, queuedTran[i].position.z);
-        }
-        queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
+        //float highest = -50.0f;
+        //int highestIndex = 0;
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    if (queuedTran[i].position.y > highest)
+        //    {
+        //        highestIndex = i;
+        //        highest = queuedTran[i].position.y;
+        //    }
+        //    // move each card after it has been checked
+        //    queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + vertOffset, queuedTran[i].position.z);
+        //}
+        //queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
         if (moves.Count < 3)
         {
             // make sprite appear
+        }
+        MakeLocks();
+    }
+
+    private void MakeLocks()
+    {
+        Debug.Log(starting_index);
+        MakeLock(MoveTypes.MOVE);
+        MakeLock(MoveTypes.MELEE);
+        MakeLock(MoveTypes.BLOCK);
+        MakeLock(MoveTypes.RANGE);
+        MakeLock(MoveTypes.CHARGE);
+    }
+
+    private void MakeLock(MoveTypes m)
+    {
+        int mIndex = (int)m;
+        int cd = cooldowns[mIndex];
+        Locks l = Locks.OPEN;
+        if (cd >= 3)
+        {
+            l = Locks.HECKA;
+        }
+        else
+        {
+            int iPoint = starting_index;
+            if (moves.Count > 3)
+            {
+                iPoint = starting_index + 3;
+            }
+            else
+            {
+                iPoint = starting_index + moves.Count;
+            }
+            if(iPoint < 0)
+            {
+                iPoint = 0;
+            }
+            cd = cHistory[iPoint][mIndex];
+            outcool = cHistory[iPoint];
+            if (cd > 0)
+            {
+                l = Locks.CLOSED;
+            }
+        }
+        abMaster.UpdateAbility(m, cd, l);
+    }
+
+    private int IndexButton(Button b)
+    {
+        if ((int)b < 4)
+        {
+            return (int)b;
+        }
+        else if ((int)b < 6)
+        {
+            return (int)b + 2;
+        }
+        else if ((int)b < 8)
+        {
+            return (int)b - 2;
+        }
+        else
+        {
+            return (int)b;
         }
     }
 }
