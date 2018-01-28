@@ -53,4 +53,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pc1: {fileID: 0}
   pc2: {fileID: 0}
-  pew: {fileID: 1594988221541470, guid: 2860082c71a5ba94a9a1561dde6bd011, type: 2}
+  BlueChargeGFX: {fileID: 0}
+  RedChargeGFX: {fileID: 0}
+  RedBlock: {fileID: 0}
+  BlueBlock: {fileID: 0}
+  RedRanged: {fileID: 1779978600576532, guid: 9dced9fffd0396242865445f2812f9d7, type: 2}
+  BlueRanged: {fileID: 1545992514518728, guid: 66356358a19c31b4f92716dfdab06790, type: 2}
+  stepSpeed: 2

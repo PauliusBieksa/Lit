@@ -7,6 +7,12 @@ public class Move_manager_script : MonoBehaviour
     [SerializeField] PlayerController pc1;
     [SerializeField] PlayerController pc2;
 
+    [SerializeField] GameObject BlueChargeGFX;
+    [SerializeField] GameObject RedChargeGFX;
+
+    [SerializeField] GameObject RedBlock;
+    [SerializeField] GameObject BlueBlock;
+
     public GameObject RedRanged;
     public GameObject BlueRanged;
 
@@ -17,6 +23,8 @@ public class Move_manager_script : MonoBehaviour
     Move m1;
     Move m2;
 
+    public float stepSpeed = 2.0f;
+
     bool currentlyMoving = false;
 
     // Use this for initialization
@@ -24,6 +32,12 @@ public class Move_manager_script : MonoBehaviour
     {
         player1t = GameObject.Find ("Player1").GetComponent<Transform> ();
         player2t = GameObject.Find ("Player2").GetComponent<Transform> ();
+
+        BlueChargeGFX.SetActive (false);
+        RedChargeGFX.SetActive (false);
+
+        RedBlock.SetActive (false);
+        BlueBlock.SetActive (false);
     }
 
     // Update is called once per frame
@@ -140,7 +154,10 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.S)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.N;
@@ -149,7 +166,12 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.S)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
+
                     }
                     p2pushed = true;
                     p2dir = Dirs.N;
@@ -162,7 +184,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.SW)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.NE;
@@ -171,7 +197,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.SW)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.NE;
@@ -184,7 +214,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.W)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.E;
@@ -193,7 +227,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.W)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.E;
@@ -206,7 +244,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.NW)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.SE;
@@ -215,7 +257,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.NW)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.SE;
@@ -228,7 +274,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.N)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.S;
@@ -237,7 +287,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.N)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.S;
@@ -250,7 +304,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.NE)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.SW;
@@ -259,7 +317,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.NE)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.SW;
@@ -272,7 +334,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.E)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.W;
@@ -281,7 +347,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.E)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.W;
@@ -294,7 +364,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m1.type == MoveTypes.BLOCK && m1.dir == Dirs.SE)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        RedBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
                     }
                     p1pushed = true;
                     p1dir = Dirs.NW;
@@ -303,7 +377,11 @@ public class Move_manager_script : MonoBehaviour
                 {
                     if (m2.type == MoveTypes.BLOCK && m2.dir == Dirs.SE)
                     {
-                        t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        BlueBlock.SetActive (true);
+                        //t.Rotate (new Vector3 (0.0f, 0.0f, 1.0f), 180.0f);
+                        StartCoroutine (Turn (t, RotToEnum (t.rotation), stepSpeed));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
                     }
                     p2pushed = true;
                     p2dir = Dirs.NW;
@@ -326,9 +404,12 @@ public class Move_manager_script : MonoBehaviour
         Vector3 tmp = new Vector3 (0.0f, 0.0f, 0.0f);
         if (m1.type == MoveTypes.CHARGE && m2.type == MoveTypes.CHARGE)
         {
+            RedChargeGFX.SetActive (true);
+            BlueChargeGFX.SetActive (true);
             // Charging straight into each other
             if (DirLookup (m1.dir) + DirLookup (m2.dir) == tmp)
             {
+
                 // SPECIAL HAM /////////////////////////////////////////////////////////
                 if (Vector3.SqrMagnitude (player1t.position + DirLookup (m1.dir) - player2t.position) < 0.09f)
                 {
@@ -362,6 +443,7 @@ public class Move_manager_script : MonoBehaviour
                     StartCoroutine (Lerp (player1t, ReverseDir (m1.dir), 2));
                     StartCoroutine (Lerp (player2t, ReverseDir (m2.dir), 2));
                     yield return new WaitForSeconds (0.22f);
+                    BlueChargeGFX.SetActive (false);
                 }
                 // No contact
                 else
@@ -369,6 +451,8 @@ public class Move_manager_script : MonoBehaviour
                     StartCoroutine (Lerp (player1t, m1.dir, 2));
                     StartCoroutine (Lerp (player2t, m2.dir, 2));
                     yield return new WaitForSeconds (0.22f);
+                    BlueChargeGFX.SetActive (false);
+                    BlueChargeGFX.SetActive (false);
                 }
             }
             else
@@ -399,17 +483,23 @@ public class Move_manager_script : MonoBehaviour
                     yield return new WaitForSeconds (0.22f);
                 }
             }
+            RedChargeGFX.SetActive (false);
+            BlueChargeGFX.SetActive (false);
+
         }
         else if (m1.type == MoveTypes.CHARGE)
         {
+            RedChargeGFX.SetActive (true);
             if (Vector3.SqrMagnitude (player1t.position + DirLookup (m1.dir) - player2t.position) < 0.09f)
             {
                 StartCoroutine (Lerp (player1t, m1.dir, 1));
                 yield return new WaitForSeconds (0.22f);
                 if (m2.type == MoveTypes.BLOCK)
                 {
+                    BlueBlock.SetActive (true);
                     StartCoroutine (Lerp (player1t, ReverseDir (m1.dir), 3));
                     yield return new WaitForSeconds (0.22f);
+                    BlueBlock.SetActive (false);
                 }
                 else
                 {
@@ -423,8 +513,10 @@ public class Move_manager_script : MonoBehaviour
                 yield return new WaitForSeconds (0.22f);
                 if (m2.type == MoveTypes.BLOCK)
                 {
+                    BlueBlock.SetActive (true);
                     StartCoroutine (Lerp (player1t, ReverseDir (m1.dir), 3));
                     yield return new WaitForSeconds (0.22f);
+                    BlueBlock.SetActive (false);
                 }
                 else
                 {
@@ -443,6 +535,7 @@ public class Move_manager_script : MonoBehaviour
                         hit = true;
                         StartCoroutine (Lerp (player1t, m1.dir, 1));
                         yield return new WaitForSeconds (0.22f);
+                        RedChargeGFX.SetActive (false);
 
                         StartCoroutine (Lerp (player1t, RotToEnum (p.rotation), 1));
                         Destroy (p.gameObject);
@@ -458,6 +551,7 @@ public class Move_manager_script : MonoBehaviour
                             hit = true;
                             StartCoroutine (Lerp (player1t, m1.dir, 2));
                             yield return new WaitForSeconds (0.22f);
+                            RedChargeGFX.SetActive (false);
 
                             StartCoroutine (Lerp (player1t, RotToEnum (p.rotation), 1));
                             Destroy (p.gameObject);
@@ -465,6 +559,7 @@ public class Move_manager_script : MonoBehaviour
                         }
                     }
                 }
+
                 if (!hit)
                 {
                     StartCoroutine (Lerp (player1t, m1.dir, 2));
@@ -472,17 +567,21 @@ public class Move_manager_script : MonoBehaviour
                     yield return new WaitForSeconds (0.22f);
                 }
             }
+            RedChargeGFX.SetActive (false);
         }
         else if (m2.type == MoveTypes.CHARGE)
         {
+            BlueChargeGFX.SetActive (true);
             if (Vector3.SqrMagnitude (player2t.position + DirLookup (m2.dir) - player1t.position) < 0.09f)
             {
                 StartCoroutine (Lerp (player2t, m2.dir, 1));
                 yield return new WaitForSeconds (0.22f);
                 if (m1.type == MoveTypes.BLOCK)
                 {
+                    RedBlock.SetActive (true);
                     StartCoroutine (Lerp (player2t, ReverseDir (m2.dir), 3));
                     yield return new WaitForSeconds (0.22f);
+                    RedBlock.SetActive (false);
                 }
                 else
                 {
@@ -496,8 +595,10 @@ public class Move_manager_script : MonoBehaviour
                 yield return new WaitForSeconds (0.22f);
                 if (m1.type == MoveTypes.BLOCK)
                 {
+                    RedBlock.SetActive (true);
                     StartCoroutine (Lerp (player2t, ReverseDir (m2.dir), 3));
                     yield return new WaitForSeconds (0.22f);
+                    RedBlock.SetActive (false);
                 }
                 else
                 {
@@ -516,6 +617,7 @@ public class Move_manager_script : MonoBehaviour
                         hit = true;
                         StartCoroutine (Lerp (player2t, m2.dir, 1));
                         yield return new WaitForSeconds (0.22f);
+                        BlueChargeGFX.SetActive (false);
 
                         StartCoroutine (Lerp (player2t, RotToEnum (p.rotation), 1));
                         Destroy (p.gameObject);
@@ -531,6 +633,7 @@ public class Move_manager_script : MonoBehaviour
                             hit = true;
                             StartCoroutine (Lerp (player2t, m2.dir, 2));
                             yield return new WaitForSeconds (0.22f);
+                            BlueChargeGFX.SetActive (false);
 
                             StartCoroutine (Lerp (player2t, RotToEnum (p.rotation), 1));
                             Destroy (p.gameObject);
@@ -538,6 +641,7 @@ public class Move_manager_script : MonoBehaviour
                         }
                     }
                 }
+
                 if (!hit)
                 {
                     //StartCoroutine(Lerp(player1t, p1dir, 2));
@@ -644,8 +748,10 @@ public class Move_manager_script : MonoBehaviour
             {
                 if (m2.type == MoveTypes.BLOCK)
                 {
+                    BlueBlock.SetActive (true);
                     StartCoroutine (Lerp (player1t, ReverseDir (m1.dir), 3));
                     yield return new WaitForSeconds (0.22f);
+                    BlueBlock.SetActive (false);
                 }
                 else
                 {
@@ -660,8 +766,10 @@ public class Move_manager_script : MonoBehaviour
             {
                 if (m1.type == MoveTypes.BLOCK)
                 {
+                    RedBlock.SetActive (true);
                     StartCoroutine (Lerp (player2t, ReverseDir (m2.dir), 3));
                     yield return new WaitForSeconds (0.22f);
+                    RedBlock.SetActive (false);
                 }
                 else
                 {
@@ -675,6 +783,14 @@ public class Move_manager_script : MonoBehaviour
             if (m1.type == MoveTypes.RANGE)
                 if (Vector3.SqrMagnitude (player1t.position + DirLookup (m1.dir) - player2t.position) < 0.09f)
                 {
+                    if (m2.type == MoveTypes.BLOCK)
+                    {
+                        BlueBlock.SetActive (true);
+                        StartCoroutine (Lerp (player1t, ReverseDir (m1.dir), 1));
+                        yield return new WaitForSeconds (0.22f);
+                        BlueBlock.SetActive (false);
+                    }
+
                     // animating goes here*************************
                     StartCoroutine (Lerp (player2t, m1.dir, 1));
                     yield return new WaitForSeconds (0.22f);
@@ -684,6 +800,13 @@ public class Move_manager_script : MonoBehaviour
             if (m2.type == MoveTypes.RANGE)
                 if (Vector3.SqrMagnitude (player2t.position + DirLookup (m2.dir) - player1t.position) < 0.09f)
                 {
+                    if (m1.type == MoveTypes.BLOCK)
+                    {
+                        RedBlock.SetActive (true);
+                        StartCoroutine (Lerp (player2t, ReverseDir (m2.dir), 1));
+                        yield return new WaitForSeconds (0.22f);
+                        RedBlock.SetActive (false);
+                    }
                     // animating goes here*************************
                     StartCoroutine (Lerp (player1t, m2.dir, 1));
                     yield return new WaitForSeconds (0.22f);
