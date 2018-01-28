@@ -7,7 +7,7 @@ public class JoinGame : MonoBehaviour
 
 	[SerializeField]
 	GameObject[] player = new GameObject[2];
-
+    [SerializeField]
 	PlayerInput[] pI = new PlayerInput[2];
 
 	RectTransform rect;
@@ -19,8 +19,6 @@ public class JoinGame : MonoBehaviour
 	void Start ()
 	{
 		rect = GetComponent<RectTransform> ();
-		pI[0] = player[0].GetComponent<PlayerInput> ();
-		pI[1] = player[1].GetComponent<PlayerInput> ();
 		Debug.Log (pI[0].name);
 	}
 
@@ -54,7 +52,7 @@ public class JoinGame : MonoBehaviour
 				float before = rect.position.y;
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Left, speed);
 				player[0].transform.position = new Vector3 (player[0].transform.position.x, player[0].transform.position.y, 1);
-				pI[0].gameObject.transform.position = new Vector3 (-2.5f, 0.5f, 0);
+                player[0].transform.position = new Vector3 (-2.5f, 0.5f, 0);
 				yield return null;
 			}
 		}
@@ -71,7 +69,7 @@ public class JoinGame : MonoBehaviour
 
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Right, speed);
 				player[1].transform.position = new Vector3 (player[1].transform.position.x, player[1].transform.position.y, 1);
-				pI[1].gameObject.transform.position = new Vector3 (2.5f, 0.5f, 0);
+				player[1].transform.position = new Vector3 (2.5f, 0.5f, 0);
 				yield return null;
 			}
 		}

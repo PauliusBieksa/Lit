@@ -31,6 +31,8 @@ public class Turn_manager_script : MonoBehaviour
 
     AbilityMaster abMaster;
 
+    bool resolution = false;
+
     // Use this for initialization
     void Start()
     {
@@ -53,8 +55,9 @@ public class Turn_manager_script : MonoBehaviour
         MakeLocks();
     }
 
-    void StartTurn()
+    public void StartTurn()
     {
+        resolution = false;
         loopTimer += turnTimer;
         cHistory.Add(cooldowns);
         starting_index = 0;
@@ -94,8 +97,9 @@ public class Turn_manager_script : MonoBehaviour
         {
             // make invisible
         }
+        resolution = true;
         // execute moves
-        StartCoroutine(pc.ExecuteMoves(turn));
+        pc.ExecuteMoves(turn);
         cooldowns = cHistory[cHistory.Count - 1];
         cHistory.Clear();
         moves.Clear();
@@ -107,7 +111,7 @@ public class Turn_manager_script : MonoBehaviour
             }
             superLock[i] = false;
         }
-        StartTurn();
+      //  StartTurn();
     }
 
     // Returns whether an ability is on cooldown(at the start of turn) (true is available to use)
@@ -222,58 +226,64 @@ public class Turn_manager_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        count = moves.Count;
-        loopTimer -= Time.deltaTime;
-        if (loopTimer <= 0.0f)
+        if (!resolution)
         {
-            Debug.Log("Time's up!!!");
-            EndTurn();
+            count = moves.Count;
+            loopTimer -= Time.deltaTime;
+            if (loopTimer <= 0.0f)
+            {
+                Debug.Log("Time's up!!!");
+                EndTurn();
+            }
         }
     }
 
     // Adds move to the moves queue, appends starting index if required ** Check for cooldown before using **
     public void AddMove(Move m)
     {
-        if (moves.Count > 2)
+        if (!resolution)
         {
-            while (moves.Count > 3 + starting_index)
+            if (moves.Count > 2)
             {
-                moves.RemoveAt(moves.Count - 1);
+                while (moves.Count > 3 + starting_index)
+                {
+                    moves.RemoveAt(moves.Count - 1);
+                }
+                starting_index++;
             }
-            starting_index++;
-        }
 
-        cHistory.Add(new int[6]);
-        for (int i = 1; i < 6; i++)
-        {
-            // Some jank (shouldn't be 6 times)
-            cHistory[cHistory.Count - 1][i] = cHistory[cHistory.Count - 2][i];
-            if (cooldowns[i] < 3 && cHistory[cHistory.Count - 1][i] != 0)
+            cHistory.Add(new int[6]);
+            for (int i = 1; i < 6; i++)
             {
-                cHistory[cHistory.Count - 1][i]--;
+                // Some jank (shouldn't be 6 times)
+                cHistory[cHistory.Count - 1][i] = cHistory[cHistory.Count - 2][i];
+                if (cooldowns[i] < 3 && cHistory[cHistory.Count - 1][i] != 0)
+                {
+                    cHistory[cHistory.Count - 1][i]--;
+                }
             }
-        }
-        cHistory[cHistory.Count - 1][(int)m.type] = staticObjects.cooldowns[(int)m.type];
+            cHistory[cHistory.Count - 1][(int)m.type] = staticObjects.cooldowns[(int)m.type];
 
-        moves.Add(m);
-        //float highest = -50.0f;
-        //int highestIndex = 0;
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    if (queuedTran[i].position.y > highest)
-        //    {
-        //        highestIndex = i;
-        //        highest = queuedTran[i].position.y;
-        //    }
-        //    // move each card after it has been checked
-        //    queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + vertOffset, queuedTran[i].position.z);
-        //}
-        //queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
-        if (moves.Count < 3)
-        {
-            // make sprite appear
+            moves.Add(m);
+            //float highest = -50.0f;
+            //int highestIndex = 0;
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    if (queuedTran[i].position.y > highest)
+            //    {
+            //        highestIndex = i;
+            //        highest = queuedTran[i].position.y;
+            //    }
+            //    // move each card after it has been checked
+            //    queuedTran[i].position = new Vector3(queuedTran[i].position.x, queuedTran[i].position.y + vertOffset, queuedTran[i].position.z);
+            //}
+            //queuedTran[highestIndex].position = new Vector3(queuedTran[highestIndex].position.x, queuedTran[highestIndex].position.y - (vertOffset * 4.0f), queuedTran[highestIndex].position.z);
+            if (moves.Count < 3)
+            {
+                // make sprite appear
+            }
+            MakeLocks();
         }
-        MakeLocks();
     }
 
     private void MakeLocks()
