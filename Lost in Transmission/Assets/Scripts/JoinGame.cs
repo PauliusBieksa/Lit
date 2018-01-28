@@ -54,7 +54,7 @@ public class JoinGame : MonoBehaviour
 				Debug.Log ("player 1 join");
 				float before = rect.position.y;
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Left, speed);
-				player[0].GetComponent<SpriteRenderer> ().sortingOrder = 1;
+				player[0].transform.position = new Vector3 (player[0].transform.position.x, player[0].transform.position.y, 1);
 				pI[0].gameObject.transform.position = new Vector3 (-2.5f, 0.5f, 0);
 				yield return null;
 			}
@@ -71,7 +71,7 @@ public class JoinGame : MonoBehaviour
 				Debug.Log ("player 2 join");
 
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Right, speed);
-				player[1].GetComponent<SpriteRenderer> ().sortingOrder = 1;
+				player[1].transform.position = new Vector3 (player[1].transform.position.x, player[1].transform.position.y, 1);
 				pI[1].gameObject.transform.position = new Vector3 (2.5f, 0.5f, 0);
 				yield return null;
 			}
