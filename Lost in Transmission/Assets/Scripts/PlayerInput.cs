@@ -27,12 +27,12 @@ public class PlayerInput : MonoBehaviour
     private bool rRead;
     private bool rHeld;
 
-    public bool hasController()
+    public bool HasController()
     {
         return controllerNumber > 0;
     }
 
-    public void setControllerNumber(int conNum)
+    public void SetControllerNumber(int conNum)
     {
         controllerNumber = conNum;
         horizontalAxis = controllerNumber + "_horizontal";
@@ -95,7 +95,7 @@ public class PlayerInput : MonoBehaviour
 
     public bool ButtonDown(Button butt)
     {
-        if (!hasController())
+        if (!HasController())
         {
             return false;
         }
@@ -119,7 +119,7 @@ public class PlayerInput : MonoBehaviour
 
     public bool ButtonHeld(Button butt)
     {
-        if (!hasController())
+        if (!HasController())
         {
             return false;
         }
@@ -143,7 +143,7 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (hasController())
+        if (HasController())
         {
             Horizontal = Input.GetAxisRaw(horizontalAxis);
             Vertical = Input.GetAxisRaw(verticalAxis);
@@ -192,7 +192,7 @@ public class PlayerInput : MonoBehaviour
 
     public Vector3 JoystickInput()
     {
-        if (!hasController())
+        if (!HasController())
         {
             return new Vector3();
         }
@@ -202,7 +202,7 @@ public class PlayerInput : MonoBehaviour
 
     public Dirs CompassInput()
     {
-        if (!hasController())
+        if (!HasController())
         {
             return Dirs.NONE;
         }

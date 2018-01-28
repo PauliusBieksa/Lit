@@ -32,10 +32,10 @@ public class ControllerAssigner : MonoBehaviour
     {
         for (int i = 0; i < 2; ++i)
         {
-            if (!inputs[i].hasController())
+            if (!inputs[i].HasController())
             {
                 usedControllers.Add(conNum);
-                inputs[i].setControllerNumber(conNum);
+                inputs[i].SetControllerNumber(conNum);
                 return;
             }
         }
