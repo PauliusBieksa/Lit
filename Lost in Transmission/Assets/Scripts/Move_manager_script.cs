@@ -555,9 +555,14 @@ public class Move_manager_script : MonoBehaviour
         {
             if (!(Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position - DirLookup(m2.dir)) < 0.09f))
             {
+                StartCoroutine(Turn(player1t, m1.dir, 2.0f));
+                StartCoroutine(Turn(player2t, m2.dir, 2.0f));
+                yield return new WaitForSeconds(0.22f);
+
                 StartCoroutine(Lerp(player1t, m1.dir, 1));
                 StartCoroutine(Lerp(player2t, m2.dir, 1));
                 yield return new WaitForSeconds(0.22f);
+                // Projectile check
                 foreach (Transform p in projectiles)
                 {
                     if (p.position == player1t.position)
@@ -579,6 +584,9 @@ public class Move_manager_script : MonoBehaviour
         {
             if (!(Vector3.SqrMagnitude(player1t.position + DirLookup(m1.dir) - player2t.position) < 0.09f))
             {
+                StartCoroutine(Turn(player1t, m1.dir, 2.0f));
+                yield return new WaitForSeconds(0.22f);
+
                 StartCoroutine(Lerp(player1t, m1.dir, 1));
                 yield return new WaitForSeconds(0.22f);
                 foreach (Transform p in projectiles)
@@ -596,6 +604,9 @@ public class Move_manager_script : MonoBehaviour
         {
             if (!(Vector3.SqrMagnitude(player2t.position + DirLookup(m2.dir) - player1t.position) < 0.09f))
             {
+                StartCoroutine(Turn(player2t, m2.dir, 2.0f));
+                yield return new WaitForSeconds(0.22f);
+
                 StartCoroutine(Lerp(player2t, m2.dir, 1));
                 yield return new WaitForSeconds(0.22f);
                 foreach (Transform p in projectiles)
@@ -710,5 +721,18 @@ public class Move_manager_script : MonoBehaviour
             yield return null;
         }
         currentlyMoving = false;
+    }
+
+
+    IEnumerator Turn(Transform t, Dirs target, float step)
+    {
+        Quaternion qtarget = Quaternion.Euler(0, 0, (float)target);
+        Quaternion rot = t.rotation;
+        while (rot != qtarget)
+        {
+            rot = Quaternion.RotateTowards(rot, qtarget, step);
+            t.rotation = rot;
+            yield return null;
+        }
     }
 }
