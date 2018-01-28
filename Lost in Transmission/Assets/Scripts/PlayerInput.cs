@@ -156,6 +156,7 @@ public class PlayerInput : MonoBehaviour
             float trigger = Input.GetAxisRaw(lTrigg);
             if (trigger != 0.0f)
             {
+                Debug.Log("LEFT TRIGGER");
                 if (!lHeld)
                 {
                     lTriggered = trigger;
@@ -176,6 +177,7 @@ public class PlayerInput : MonoBehaviour
             trigger = Input.GetAxisRaw(rTrigg);
             if (trigger != 0.0f)
             {
+                Debug.Log("RIGHT TRIGGER");
                 if (!rHeld)
                 {
                     rTriggered = trigger;
