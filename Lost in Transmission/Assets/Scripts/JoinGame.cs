@@ -18,11 +18,10 @@ public class JoinGame : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		player[0].GetComponent<SpriteRenderer> ().sortingOrder = -5;
-		player[1].GetComponent<SpriteRenderer> ().sortingOrder = -5;
 		rect = GetComponent<RectTransform> ();
 		pI[0] = player[0].GetComponent<PlayerInput> ();
 		pI[1] = player[1].GetComponent<PlayerInput> ();
+		Debug.Log (pI[0].name);
 	}
 
 	// Update is called once per frame
