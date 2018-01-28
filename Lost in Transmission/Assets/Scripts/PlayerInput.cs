@@ -45,6 +45,7 @@ public class PlayerInput : MonoBehaviour
         rTrigg = controllerNumber + "_RTrigger";
         lBump = controllerNumber + "_LBumper";
         rBump = controllerNumber + "_RBumper";
+        GetComponent<Turn_manager_script>().PlayerEntered();
     }
 
     public bool LTButtonDown

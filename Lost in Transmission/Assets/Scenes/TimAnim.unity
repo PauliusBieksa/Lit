@@ -387,6 +387,7 @@ MonoBehaviour:
   - {fileID: 1333517501}
   - {fileID: 1517530690}
   - {fileID: 818200153}
+  outcool: 000000000000000000000000000000000000000000000000
   turnTimer: 15
 --- !u!1 &17586672
 GameObject:
@@ -1235,7 +1236,7 @@ MonoBehaviour:
   chargePower: 2
   startTime: 0
   journeyTime: 0.5
-  tm: {fileID: 0}
+  tm: {fileID: 1984652475}
   Executed: 0
 --- !u!1 &525644190
 GameObject:
@@ -1891,7 +1892,7 @@ MonoBehaviour:
   chargePower: 2
   startTime: 0
   journeyTime: 0.5
-  tm: {fileID: 0}
+  tm: {fileID: 17208884}
   Executed: 0
 --- !u!1001 &1051546472
 Prefab:
@@ -4287,6 +4288,7 @@ MonoBehaviour:
   - {fileID: 307037082}
   - {fileID: 896488982}
   - {fileID: 862789045}
+  outcool: 000000000000000000000000000000000000000000000000
   turnTimer: 15
 --- !u!1 &1985501528
 GameObject:

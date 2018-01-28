@@ -1,23 +1,23 @@
 ﻿public enum Dirs
 {
     NONE = 999,
-	N = 0,
-	NE = -45,
-	E = -90,
-	SE = -135,
-	S = -180,
-	SW = -225,
-	W = -270,
-	NW = -315
+    N = 0,
+    NE = -45,
+    E = -90,
+    SE = -135,
+    S = -180,
+    SW = -225,
+    W = -270,
+    NW = -315
 }
 
 public enum MoveTypes
 {
     NONE = -1,
-	MOVE = 0,
-	BLOCK = 1,
-	MELEE = 2,
-	RANGE = 3,
+    MOVE = 0,
+    BLOCK = 1,
+    MELEE = 2,
+    RANGE = 3,
     CHARGE = 4
 };
 
@@ -42,12 +42,18 @@ public enum Locks
 
 public struct Move
 {
-	public MoveTypes type;
-	public Dirs dir;
+    public MoveTypes type;
+    public Dirs dir;
 }
 
 public class staticObjects
 {
-    public static int[] cooldowns = { 0, 1, 3, 2, 4, 0 };
+    public static int[] cooldowns = {
+        0 /*move*/,
+        1 /*block*/,
+        3 /*melee*/,
+        2 /*range*/,
+        4 /*charge*/,
+        0 };
     public const float moveTime = 0.2f;
 }

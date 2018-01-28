@@ -24,14 +24,7 @@ public class AbilityCard : MonoBehaviour
                 break;
             }
         }
-        Debug.Log(locker.name);
         sL = FindObjectOfType<SpriteLibrary>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public int Cooldown

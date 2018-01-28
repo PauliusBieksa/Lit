@@ -51,7 +51,7 @@ public class QueueInput : MonoBehaviour
             else if (held[i] && !pI.ButtonHeld(butts[i]))
             {
                 held[i] = false;
-                if (i == heldIndex && (i < 4 || i == 6) && tms.Cooldown(ButtToMove(butts[i])) && dir != Dirs.NONE)
+                if (i == heldIndex && (i < 4 || i == 6) && tms.CurrCooldown(ButtToMove(butts[i])) && dir != Dirs.NONE)
                 {
                     Move m = new Move();
                     m.dir = dir;

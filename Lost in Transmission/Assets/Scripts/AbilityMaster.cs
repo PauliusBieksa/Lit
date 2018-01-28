@@ -18,10 +18,10 @@ public class AbilityMaster : MonoBehaviour {
                 case "abilityMove":
                     abs[0] = tempAbs[i];
                     break;
-                case "abilityMelee":
+                case "abilityBlock":
                     abs[1] = tempAbs[i];
                     break;
-                case "abilityBlock":
+                case "abilityMelee":
                     abs[2] = tempAbs[i];
                     break;
                 case "abilityRange":
@@ -34,9 +34,9 @@ public class AbilityMaster : MonoBehaviour {
         }
     }
 
-    public void UpdateAbility(Button b, int cd, Locks l)
+    public void UpdateAbility(MoveTypes m, int cd, Locks l)
     {
-        int i = ((int)b < 4 ? (int)b : (int)b - 2);
+        int i = (int)m;
         abs[i].Locked = l;
         abs[i].Cooldown = cd;
     }
