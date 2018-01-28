@@ -57,6 +57,8 @@ MonoBehaviour:
   RedChargeGFX: {fileID: 0}
   RedBlock: {fileID: 0}
   BlueBlock: {fileID: 0}
+  RedMelee: {fileID: 0}
+  BlueMelee: {fileID: 0}
   RedRanged: {fileID: 1779978600576532, guid: 9dced9fffd0396242865445f2812f9d7, type: 2}
   BlueRanged: {fileID: 1545992514518728, guid: 66356358a19c31b4f92716dfdab06790, type: 2}
   stepSpeed: 2

@@ -13,6 +13,9 @@ public class Move_manager_script : MonoBehaviour
     [SerializeField] GameObject RedBlock;
     [SerializeField] GameObject BlueBlock;
 
+    [SerializeField] GameObject RedMelee;
+    [SerializeField] GameObject BlueMelee;
+
     public GameObject RedRanged;
     public GameObject BlueRanged;
 
@@ -721,6 +724,8 @@ public class Move_manager_script : MonoBehaviour
         }
         else if (m1.type == MoveTypes.MELEE && m2.type == MoveTypes.MELEE)
         {
+            RedMelee.SetActive (true);
+            BlueMelee.SetActive (true);
             bool p1hit = false;
             bool p2hit = false;
             if (Vector3.SqrMagnitude (player1t.position + DirLookup (m1.dir) - player2t.position) < 0.09f)
@@ -731,6 +736,7 @@ public class Move_manager_script : MonoBehaviour
             {
                 p1hit = true;
             }
+
             if (p1hit)
             {
                 StartCoroutine (Lerp (player1t, m2.dir, 3));
@@ -741,9 +747,18 @@ public class Move_manager_script : MonoBehaviour
                 StartCoroutine (Lerp (player2t, m1.dir, 3));
                 yield return new WaitForSeconds (0.22f);
             }
+            if (!p1hit && !p2hit)
+            {
+                yield return new WaitForSeconds (0.22f);
+            }
+
+            RedMelee.SetActive (false);
+            BlueMelee.SetActive (false);
+
         }
         else if (m1.type == MoveTypes.MELEE)
         {
+            RedMelee.SetActive (true);
             if (Vector3.SqrMagnitude (player1t.position + DirLookup (m1.dir) - player2t.position) < 0.09f)
             {
                 if (m2.type == MoveTypes.BLOCK)
@@ -759,9 +774,15 @@ public class Move_manager_script : MonoBehaviour
                     yield return new WaitForSeconds (0.22f);
                 }
             }
+            else
+            {
+                yield return new WaitForSeconds (0.22f);
+            }
+            RedMelee.SetActive (false);
         }
         else if (m2.type == MoveTypes.MELEE)
         {
+            BlueMelee.SetActive (true);
             if (Vector3.SqrMagnitude (player2t.position + DirLookup (m2.dir) - player1t.position) < 0.09f)
             {
                 if (m1.type == MoveTypes.BLOCK)
@@ -777,6 +798,11 @@ public class Move_manager_script : MonoBehaviour
                     yield return new WaitForSeconds (0.22f);
                 }
             }
+            else
+            {
+                yield return new WaitForSeconds (0.22f);
+            }
+            BlueMelee.SetActive (false);
         }
         else
         {
