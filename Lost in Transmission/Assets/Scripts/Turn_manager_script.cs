@@ -8,6 +8,8 @@ public class Turn_manager_script : MonoBehaviour
     public int count = 0;
     int starting_index = 0;
 
+    SpriteLibrary sL;
+
     [SerializeField] float vertOffset;
 
     [SerializeField] Sprite[] onCooldown;
@@ -29,6 +31,7 @@ public class Turn_manager_script : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        sL = FindObjectOfType<SpriteLibrary>();
         GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
         for (int i = 0; i < 4; i++)
         {
@@ -41,10 +44,12 @@ public class Turn_manager_script : MonoBehaviour
     {
         loopTimer += turnTimer;
         cHistory.Add(cooldowns);
+        starting_index = 0;
     }
 
     void EndTurn()
     {
+        queuedTran[0].GetComponent<SpriteRenderer>().sprite = sL.arrow;
         if (!validTurn)
         {
             starting_index = 0;
