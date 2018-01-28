@@ -14,7 +14,7 @@ public class Turn_manager_script : MonoBehaviour
 
     [SerializeField] Sprite[] onCooldown;
     [SerializeField] Sprite[] offCooldown;
-    [SerializeField] PlayerInput pI;
+    PlayerInput pI;
     [SerializeField] PlayerController pc;
 
     [SerializeField] Transform[] queuedTran = new Transform[4];
@@ -35,6 +35,7 @@ public class Turn_manager_script : MonoBehaviour
     void Start()
     {
         sL = FindObjectOfType<SpriteLibrary>();
+        pI = GetComponent<PlayerInput>();
         GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
         for (int i = 0; i < 4; i++)
         {

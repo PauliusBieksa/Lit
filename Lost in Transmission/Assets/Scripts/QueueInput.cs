@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class QueueInput : MonoBehaviour
 {
-    [SerializeField]
     PlayerInput pI;
-    [SerializeField]
     Turn_manager_script tms;
 
     InputBox inBox;
@@ -34,6 +32,8 @@ public class QueueInput : MonoBehaviour
         butts[8] = Button.START;
 
         inBox = GetComponentInChildren<InputBox>();
+        pI = GetComponent<PlayerInput>();
+        tms = GetComponent<Turn_manager_script>();
     }
 
     // Update is called once per frame
@@ -70,10 +70,12 @@ public class QueueInput : MonoBehaviour
 
         if (pI.LTButtonDown)
         {
+            Debug.Log("LTDown");
             tms.QueueUp();
         }
         else if (pI.RTButtonDown)
         {
+            Debug.Log("RightTDown");
             tms.QueueDown();
         }
     }
