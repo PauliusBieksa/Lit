@@ -16,7 +16,7 @@ public class Turn_manager_script : MonoBehaviour
     [SerializeField] Sprite[] offCooldown;
     [SerializeField] PlayerInput pI;
     [SerializeField] PlayerController pc;
-    
+
     [SerializeField] Transform[] queuedTran = new Transform[4];
     bool[] locked = new bool[4];
 
@@ -27,6 +27,7 @@ public class Turn_manager_script : MonoBehaviour
     [SerializeField] float turnTimer = 15.0f;
     float loopTimer = 0.0f;
 
+    AbilityMaster abMaster;
 
     // Use this for initialization
     void Start()
@@ -35,8 +36,9 @@ public class Turn_manager_script : MonoBehaviour
         GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
         for (int i = 0; i < 4; i++)
         {
-         //   queuedTran[i] = q[i].GetComponent<Transform>();
+            //   queuedTran[i] = q[i].GetComponent<Transform>();
         }
+        abMaster = GetComponentInChildren<AbilityMaster>();
         StartTurn();
     }
 
@@ -45,6 +47,7 @@ public class Turn_manager_script : MonoBehaviour
         loopTimer += turnTimer;
         cHistory.Add(cooldowns);
         starting_index = 0;
+        MakeLocks();
     }
 
     void EndTurn()
@@ -170,17 +173,18 @@ public class Turn_manager_script : MonoBehaviour
             // remove lock
         }
         // Second queued check
-        if (cHistory[starting_index][(int)moves[(starting_index + 1) % 4].type] > 0)
+        if (cHistory[starting_index][(int)moves[starting_index + 1].type] > 0)
         {
             validTurn = false;
-            locked[(int)moves[(starting_index + 1) % 4].type] = true;
+            locked[(int)moves[starting_index + 1].type] = true;
             // Put a lock on
         }
         else
         {
-            locked[(int)moves[(starting_index + 1) % 4].type] = false;
+            locked[(int)moves[starting_index + 1].type] = false;
             // remove lock
         }
+        MakeLocks();
     }
 
     // Update is called once per frame
@@ -236,6 +240,60 @@ public class Turn_manager_script : MonoBehaviour
         if (moves.Count < 3)
         {
             // make sprite appear
+        }
+        MakeLocks();
+    }
+
+    private void MakeLocks()
+    {
+        MakeLock(Button.A);
+        MakeLock(Button.B);
+        MakeLock(Button.X);
+        MakeLock(Button.Y);
+        MakeLock(Button.RB);
+    }
+
+    private void MakeLock(Button b)
+    {
+        int bIndex = IndexButton(b);
+        int cd;
+        Locks l = Locks.OPEN;
+        if (moves.Count > 3)
+        {
+            cd = cHistory[starting_index + 2][bIndex];
+        }
+        else
+        {
+            cd = cHistory[starting_index + (cHistory.Count - 1)][bIndex];
+        }
+        if (cd < 3 && cd != 0)
+        {
+            l = Locks.CLOSED;
+        }
+        else if (cd >= 3)
+        {
+            l = Locks.HECKA;
+        }
+        abMaster.UpdateAbility(b, cd, l);
+    }
+
+    private int IndexButton(Button b)
+    {
+        if((int)b < 4)
+        {
+            return (int)b;
+        }
+        else if((int)b < 6)
+        {
+            return (int)b + 2;
+        }
+        else if((int)b < 8)
+        {
+            return (int)b - 2;
+        }
+        else
+        {
+            return (int)b;
         }
     }
 }

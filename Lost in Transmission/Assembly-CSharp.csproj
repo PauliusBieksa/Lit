@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\HideGUI.cs" />
+     <Compile Include="Assets\Scripts\AbilityCard.cs" />
+     <Compile Include="Assets\Scripts\AbilityMaster.cs" />
      <Compile Include="Assets\Scripts\ControllerAssigner.cs" />
      <Compile Include="Assets\Scripts\InputBox.cs" />
      <Compile Include="Assets\Scripts\JoinGame.cs" />
