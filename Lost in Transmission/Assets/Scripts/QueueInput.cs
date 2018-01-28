@@ -9,10 +9,12 @@ public class QueueInput : MonoBehaviour
     [SerializeField]
     Turn_manager_script tms;
 
+    InputBox inBox;
+
     int heldIndex;
     Dirs dir = Dirs.NONE;
-    bool[] held = new bool[4];
-    Button[] butts = new Button[4];
+    bool[] held = new bool[9];
+    Button[] butts = new Button[9];
 
     // Use this for initialization
     void Start()
@@ -25,23 +27,31 @@ public class QueueInput : MonoBehaviour
         butts[1] = Button.B;
         butts[2] = Button.X;
         butts[3] = Button.Y;
+        butts[4] = Button.RT;
+        butts[5] = Button.LT;
+        butts[6] = Button.RB;
+        butts[7] = Button.LB;
+        butts[8] = Button.START;
+
+        inBox = GetComponentInChildren<InputBox>();
     }
 
     // Update is called once per frame
     void Update()
     {
         dir = pI.CompassInput();
-        for (int i = 0; i < 4; ++i)
+        inBox.Direction = dir;
+        for (int i = 0; i < butts.Length; ++i)
         {
             if (!held[i] && pI.ButtonHeld(butts[i]))
             {
                 held[i] = true;
-                heldIndex = i;
+                HeldIndex = i;
             }
             else if (held[i] && !pI.ButtonHeld(butts[i]))
             {
                 held[i] = false;
-                if (i == heldIndex && tms.Cooldown(ButtToMove(butts[i])) && dir != Dirs.NONE)
+                if (i == heldIndex && (i < 4 || i == 6) && tms.Cooldown(ButtToMove(butts[i])) && dir != Dirs.NONE)
                 {
                     Move m = new Move();
                     m.dir = dir;
@@ -49,6 +59,11 @@ public class QueueInput : MonoBehaviour
                     // Send move to paulius
                     Debug.Log("QI " + m.dir.ToString() + " " + m.type.ToString());
                     tms.AddMove(m);
+                    HeldIndex = -1;
+                }
+                else if (i == heldIndex)
+                {
+                    HeldIndex = -1;
                 }
             }
         }
@@ -63,6 +78,14 @@ public class QueueInput : MonoBehaviour
         }
     }
 
+    private int HeldIndex
+    {
+        set
+        {
+            heldIndex = value;
+            inBox.Button = (value != -1 ? butts[value] : Button.NONE);
+        }
+    }
 
     MoveTypes ButtToMove(Button butt)
     {
@@ -76,6 +99,8 @@ public class QueueInput : MonoBehaviour
                 return MoveTypes.BLOCK;
             case Button.Y:
                 return MoveTypes.RANGE;
+            case Button.RB:
+                return MoveTypes.CHARGE;
             default:
                 return MoveTypes.MOVE;
         }

@@ -31,8 +31,8 @@ public enum Button
     RT = 4,
     LT = 5,
     RB = 6,
-    LB = 6,
-    START = 7
+    LB = 7,
+    START = 8
 };
 
 public enum Locks

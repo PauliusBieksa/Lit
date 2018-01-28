@@ -17,7 +17,7 @@ public class Turn_manager_script : MonoBehaviour
     [SerializeField] PlayerInput pI;
     [SerializeField] PlayerController pc;
     
-    Transform[] queuedTran = new Transform[4];
+    [SerializeField] Transform[] queuedTran = new Transform[4];
     bool[] locked = new bool[4];
 
     int[] cooldowns = new int[6];
@@ -35,7 +35,7 @@ public class Turn_manager_script : MonoBehaviour
         GameObject[] q = GameObject.FindGameObjectsWithTag("Queued");
         for (int i = 0; i < 4; i++)
         {
-            queuedTran[i] = q[i].GetComponent<Transform>();
+         //   queuedTran[i] = q[i].GetComponent<Transform>();
         }
         StartTurn();
     }
