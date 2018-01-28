@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\ControllerAssigner.cs" />
+     <Compile Include="Assets\Scripts\InputBox.cs" />
      <Compile Include="Assets\Scripts\JoinGame.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerInput.cs" />
@@ -59,6 +60,7 @@
      <Compile Include="Assets\Scripts\PlayerStates.cs" />
      <Compile Include="Assets\Scripts\Pulse.cs" />
      <Compile Include="Assets\Scripts\QueueInput.cs" />
+     <Compile Include="Assets\Scripts\SpriteLibrary.cs" />
      <Compile Include="Assets\Scripts\Turn_manager_script.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
