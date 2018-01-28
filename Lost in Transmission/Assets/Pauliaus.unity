@@ -448,6 +448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pc1: {fileID: 0}
   pc2: {fileID: 0}
+  pew: {fileID: 1594988221541470, guid: 2860082c71a5ba94a9a1561dde6bd011, type: 2}
 --- !u!4 &513110777
 Transform:
   m_ObjectHideFlags: 0
