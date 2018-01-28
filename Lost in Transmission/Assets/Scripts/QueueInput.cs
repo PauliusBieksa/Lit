@@ -41,11 +41,11 @@ public class QueueInput : MonoBehaviour
             else if (held[i] && !pI.ButtonHeld(butts[i]))
             {
                 held[i] = false;
-                if (i == heldIndex && tms.Cooldown(buttToMove(butts[i])) && dir != Dirs.NONE)
+                if (i == heldIndex && tms.Cooldown(ButtToMove(butts[i])) && dir != Dirs.NONE)
                 {
                     Move m = new Move();
                     m.dir = dir;
-                    m.type = buttToMove(butts[i]);
+                    m.type = ButtToMove(butts[i]);
                     // Send move to paulius
                     Debug.Log("QI " + m.dir.ToString() + " " + m.type.ToString());
                     tms.AddMove(m);
@@ -64,7 +64,7 @@ public class QueueInput : MonoBehaviour
     }
 
 
-            MoveTypes buttToMove(Button butt)
+    MoveTypes ButtToMove(Button butt)
     {
         switch (butt)
         {

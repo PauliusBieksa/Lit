@@ -24,7 +24,7 @@ public class Turn_manager_script : MonoBehaviour
     List<int[]> cHistory = new List<int[]>();
 
     bool validTurn = false;
-    [SerializeField] float turnTimer;
+    [SerializeField] float turnTimer = 15.0f;
     float loopTimer = 0.0f;
 
 
