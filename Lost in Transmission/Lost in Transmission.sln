@@ -3,22 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lost in Transmission", "Lost in Transmission.csproj", "{A7C621ED-F6A5-54AC-B660-0A302E4A2153}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lost in Transmission", "Assembly-CSharp-Editor.csproj", "{C3D42C42-0CB0-519A-808D-2AABAB349B1A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{90F8640A-5482-BDEF-BE9C-95677CBABA11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90F8640A-5482-BDEF-BE9C-95677CBABA11}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90F8640A-5482-BDEF-BE9C-95677CBABA11}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90F8640A-5482-BDEF-BE9C-95677CBABA11}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3D42C42-0CB0-519A-808D-2AABAB349B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3D42C42-0CB0-519A-808D-2AABAB349B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3D42C42-0CB0-519A-808D-2AABAB349B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3D42C42-0CB0-519A-808D-2AABAB349B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C621ED-F6A5-54AC-B660-0A302E4A2153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C621ED-F6A5-54AC-B660-0A302E4A2153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C621ED-F6A5-54AC-B660-0A302E4A2153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C621ED-F6A5-54AC-B660-0A302E4A2153}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
