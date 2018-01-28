@@ -13,15 +13,31 @@
 
 public enum MoveTypes
 {
-	MOVE,
-	BLOCK,
-	MELEE,
-	RANGE
+    NONE = -1,
+	MOVE = 0,
+	BLOCK = 1,
+	MELEE = 2,
+	RANGE = 3,
+    CHARGE = 4
 };
 
 public enum Button
 {
-    A, B, X, Y, RT, LT, RB, LB
+    NONE = -1,
+    A = 0,
+    B = 1,
+    X = 2,
+    Y = 3,
+    RT = 4,
+    LT = 5,
+    RB = 6,
+    LB = 6,
+    START = 7
+};
+
+public enum Locks
+{
+    OPEN = 0, CLOSED = 1, HECKA = 2
 };
 
 public struct Move
