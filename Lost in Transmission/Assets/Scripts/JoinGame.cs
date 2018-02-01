@@ -48,7 +48,7 @@ public class JoinGame : MonoBehaviour
 			Debug.Log ("Red");
 			while (rect.position != Left)
 			{
-				Debug.Log ("player 1 join");
+				//Debug.Log ("player 1 join");
 				float before = rect.position.y;
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Left, speed);
 				player[0].transform.position = new Vector3 (player[0].transform.position.x, player[0].transform.position.y, 1);
@@ -65,7 +65,7 @@ public class JoinGame : MonoBehaviour
 			Debug.Log ("Blue");
 			while (rect.position != Right)
 			{
-				Debug.Log ("player 2 join");
+				//Debug.Log ("player 2 join");
 
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Right, speed);
 				player[1].transform.position = new Vector3 (player[1].transform.position.x, player[1].transform.position.y, 1);

@@ -26,6 +26,9 @@ public class Move_manager_script : MonoBehaviour
     Transform player1t;
     Transform player2t;
 
+    Vector3 p1v;
+    Vector3 p2v;
+
     Move m1;
     Move m2;
 
@@ -665,9 +668,13 @@ public class Move_manager_script : MonoBehaviour
         {
             if (!(Vector3.SqrMagnitude (player1t.position + DirLookup (m1.dir) - player2t.position - DirLookup (m2.dir)) < 0.09f))
             {
+                p1v = player1t.position;
+                p2v = player2t.position;
                 StartCoroutine (Turn (player1t, m1.dir, 2.0f));
                 StartCoroutine (Turn (player2t, m2.dir, 2.0f));
                 yield return new WaitForSeconds (1.22f);
+                player1t.position = p1v;
+                player2t.position = p2v;
 
                 StartCoroutine (Lerp (player1t, m1.dir, 1, 1));
                 StartCoroutine (Lerp (player2t, m2.dir, 1, 2));
@@ -887,15 +894,28 @@ public class Move_manager_script : MonoBehaviour
         float startingTime = Time.unscaledTime;
         float timeRemaining = staticObjects.moveTime;
         float scalar = 1.0f / timeRemaining;
+        Transform feck = t;
+
         while (timeRemaining > 0.0f)
         {
-            timeRemaining -= Time.unscaledTime - startingTime;
+            timeRemaining -= Time.deltaTime; //Time.unscaledTime - startingTime;
             if (timeRemaining < 0.0f)
                 timeRemaining = 0.0f;
             float alpha = 1.0f - (timeRemaining * scalar);
             t.position = startingPosition + (DirLookup (d) * (float) dist * alpha);
+            // Debug.Log("----------" + alpha);
+            if (whichPlayer == 1)
+                p1v = t.position;
+            if (whichPlayer == 2)
+                p2v = t.position;
             yield return null;
+            feck = t;
         }
+        if (whichPlayer == 1)
+            t.position = p1v;
+        if (whichPlayer == 2)
+            t.position = p2v;
+        Debug.Log("----------" + t.position.x);
         yield return new WaitForSeconds(0.3f);
         if (whichPlayer == 1)
             currentlyMoving1 = false;

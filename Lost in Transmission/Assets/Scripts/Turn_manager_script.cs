@@ -48,6 +48,7 @@ public class Turn_manager_script : MonoBehaviour
         loopTimer += turnTimer;
         cHistory.Add(cooldowns);
         starting_index = 0;
+        resolution = false;
     }
 
     public void PlayerEntered()
@@ -229,7 +230,8 @@ public class Turn_manager_script : MonoBehaviour
         if (!resolution)
         {
             count = moves.Count;
-            loopTimer -= Time.deltaTime;
+            //loopTimer -= Time.deltaTime;
+            loopTimer -= Time.fixedUnscaledDeltaTime;
             if (loopTimer <= 0.0f)
             {
                 Debug.Log("Time's up!!!");
