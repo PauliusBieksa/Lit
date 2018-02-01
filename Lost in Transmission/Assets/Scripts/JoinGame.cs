@@ -19,7 +19,7 @@ public class JoinGame : MonoBehaviour
 	void Start ()
 	{
 		rect = GetComponent<RectTransform> ();
-		//Debug.Log (pI[0].);
+		//Debug.Log (pI[0].name);
 	}
 
 	// Update is called once per frame
@@ -27,25 +27,25 @@ public class JoinGame : MonoBehaviour
 	{
 		if (pI[0].ButtonDown (Button.A))
 		{
-			Debug.Log ("p1 button");
+			//	Debug.Log ("p1 button");
 			StartCoroutine (slideL ());
-			Debug.Log ("done 1");
+			//	Debug.Log ("done 1");
 		}
 
 		if (pI[1].ButtonDown (Button.A))
 		{
-			Debug.Log ("p1 button");
+			//	Debug.Log ("p1 button");
 			StartCoroutine (slideR ());
-			Debug.Log ("done 2");
+			//	Debug.Log ("done 2");
 		}
 	}
 
 	IEnumerator slideL ()
 	{
-		Debug.Log ("Red--------------------------------------------------");
+		//Debug.Log ("Red--------------------------------------------------");
 		if (rect.gameObject.name.Contains ("Red"))
 		{
-			Debug.Log ("Red");
+			//	Debug.Log ("Red");
 			while (rect.position != Left)
 			{
 				//Debug.Log ("player 1 join");
@@ -62,7 +62,7 @@ public class JoinGame : MonoBehaviour
 	{
 		if (rect.gameObject.name.Contains ("Blue"))
 		{
-			Debug.Log ("Blue");
+			//	Debug.Log ("Blue");
 			while (rect.position != Right)
 			{
 				//Debug.Log ("player 2 join");

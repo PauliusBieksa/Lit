@@ -15,7 +15,7 @@ public class QueueInput : MonoBehaviour
     Button[] butts = new Button[9];
 
     // Use this for initialization
-    void Start()
+    void Start ()
     {
         for (int i = 0; i < 4; ++i)
         {
@@ -31,52 +31,61 @@ public class QueueInput : MonoBehaviour
         butts[7] = Button.LB;
         butts[8] = Button.START;
 
-        inBox = GetComponentInChildren<InputBox>();
-        pI = GetComponent<PlayerInput>();
-        tms = GetComponent<Turn_manager_script>();
+        inBox = GetComponentInChildren<InputBox> ();
+        pI = GetComponent<PlayerInput> ();
+        tms = GetComponent<Turn_manager_script> ();
     }
 
     // Update is called once per frame
-    void Update()
+    void Update ()
     {
-        dir = pI.CompassInput();
-        inBox.Direction = dir;
-        for (int i = 0; i < butts.Length; ++i)
+        if (!tms.resolution)
         {
-            if (!held[i] && pI.ButtonHeld(butts[i]))
+            dir = pI.CompassInput ();
+            inBox.Direction = dir;
+            for (int i = 0; i < butts.Length; ++i)
             {
-                held[i] = true;
-                HeldIndex = i;
-            }
-            else if (held[i] && !pI.ButtonHeld(butts[i]))
-            {
-                held[i] = false;
-                if (i == heldIndex && (i < 4 || i == 6) && tms.CurrCooldown(ButtToMove(butts[i])) && dir != Dirs.NONE)
+                if (!held[i] && pI.ButtonHeld (butts[i]))
                 {
-                    Move m = new Move();
-                    m.dir = dir;
-                    m.type = ButtToMove(butts[i]);
-                    // Send move to paulius
-                    Debug.Log("QI " + m.dir.ToString() + " " + m.type.ToString());
-                    tms.AddMove(m);
-                    HeldIndex = -1;
+                    held[i] = true;
+                    HeldIndex = i;
                 }
-                else if (i == heldIndex)
+                else if (held[i] && !pI.ButtonHeld (butts[i]))
                 {
-                    HeldIndex = -1;
+                    held[i] = false;
+                    if (i == heldIndex && (i < 4 || i == 6) && tms.CurrCooldown (ButtToMove (butts[i])) && dir != Dirs.NONE)
+                    {
+                        Move m = new Move ();
+                        m.dir = dir;
+                        m.type = ButtToMove (butts[i]);
+                        // Send move to paulius
+                        Debug.Log ("QI " + m.dir.ToString () + " " + m.type.ToString ());
+                        tms.AddMove (m);
+                        HeldIndex = -1;
+                    }
+                    else if (i == heldIndex)
+                    {
+                        HeldIndex = -1;
+                    }
                 }
             }
-        }
 
-        if (pI.LTButtonDown)
-        {
-            Debug.Log("LTDown");
-            tms.QueueUp();
+            if (pI.LTButtonDown)
+            {
+                Debug.Log ("LTDown");
+                tms.QueueUp ();
+            }
+            else if (pI.RTButtonDown)
+            {
+                Debug.Log ("RightTDown");
+                tms.QueueDown ();
+            }
         }
-        else if (pI.RTButtonDown)
+        else
         {
-            Debug.Log("RightTDown");
-            tms.QueueDown();
+            HeldIndex = -1;
+            dir = Dirs.NONE;
+            inBox.Direction = dir;
         }
     }
 
@@ -89,7 +98,7 @@ public class QueueInput : MonoBehaviour
         }
     }
 
-    MoveTypes ButtToMove(Button butt)
+    MoveTypes ButtToMove (Button butt)
     {
         switch (butt)
         {
