@@ -508,12 +508,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81cc0b2a7599f94c8385cf0536d1fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  step: 5
+  step: 2
   waitTime: 1
   dist: 1
-  chargePower: 0
+  chargePower: 2
   startTime: 0
-  journeyTime: 0.2
+  journeyTime: 0.5
   tm: {fileID: 0}
   Executed: 0
 --- !u!114 &114550540291879438
@@ -564,7 +564,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5, y: 5}
+  m_Size: {x: 1.25, y: 1.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -690,7 +690,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5, y: 5}
+  m_Size: {x: 1.25, y: 1.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
