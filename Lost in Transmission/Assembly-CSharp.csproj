@@ -96,6 +96,7 @@
      <Compile Include="Assets\PostProcessing\Runtime\Utils\MaterialFactory.cs" />
      <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
      <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
+     <Compile Include="Assets\ProjectileMoves.cs" />
      <Compile Include="Assets\Scripts\AbilityCard.cs" />
      <Compile Include="Assets\Scripts\AbilityMaster.cs" />
      <Compile Include="Assets\Scripts\ControllerAssigner.cs" />

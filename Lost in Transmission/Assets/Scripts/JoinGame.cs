@@ -7,7 +7,7 @@ public class JoinGame : MonoBehaviour
 
 	[SerializeField]
 	GameObject[] player = new GameObject[2];
-    [SerializeField]
+	[SerializeField]
 	PlayerInput[] pI = new PlayerInput[2];
 
 	RectTransform rect;
@@ -19,7 +19,7 @@ public class JoinGame : MonoBehaviour
 	void Start ()
 	{
 		rect = GetComponent<RectTransform> ();
-		Debug.Log (pI[0].name);
+		//Debug.Log (pI[0].);
 	}
 
 	// Update is called once per frame
@@ -52,7 +52,7 @@ public class JoinGame : MonoBehaviour
 				float before = rect.position.y;
 				rect.localPosition = Vector3.MoveTowards (rect.localPosition, Left, speed);
 				player[0].transform.position = new Vector3 (player[0].transform.position.x, player[0].transform.position.y, 1);
-                player[0].transform.position = new Vector3 (-2.5f, 0.5f, 0);
+				player[0].transform.position = new Vector3 (-2.5f, 0.5f, 0);
 				yield return null;
 			}
 		}
